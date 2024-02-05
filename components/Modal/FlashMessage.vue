@@ -1,5 +1,5 @@
 <template>
-    <Teleport>
+    <Teleport to="#app">
         <Transition name="fade">
             <div class="modal-container">
                 <div class="modal-content">

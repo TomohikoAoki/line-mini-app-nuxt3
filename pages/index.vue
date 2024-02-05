@@ -94,7 +94,7 @@ body {
     .line-login-image {
         width: 50px;
         height: 50px;
-        background-image: url(~assets/images/line_132.png);
+        background-image: url(@/assets/images/line_132.png);
         background-size: contain;
         border-right: 1px solid rgba(0, 0, 0, 0.08);
         position: relative;
