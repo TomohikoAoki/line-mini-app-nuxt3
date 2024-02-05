@@ -13,15 +13,18 @@ const profileData = ref('')
 
 
 onMounted(() => {
-    const { $liffInit, liff } = useNuxtApp()
+    const { $liffInit, $liff } = useNuxtApp()
+
+    console.log($liffInit, 'テスト１')
+    console.log($liff, 'テスト2')
 
 
     $liffInit
         .then(async () => {
-            sdkVersion.value = liff.getVersion();
+            sdkVersion.value = $liff.getVersion();
 
-            token.value = await liff.getIDToken();
-            profileData.value = await liff.getDecodedIDToken()
+            token.value = await $liff.getIDToken();
+            profileData.value = await $liff.getDecodedIDToken()
 
             // //storeにLINEのtokenとprofileを保存
             // this.$store.dispatch('setToken', token)
