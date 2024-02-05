@@ -10,19 +10,20 @@
     </Teleport>
 </template>
 
-<script>
-export default {
-    // methods: {
-    //     close() {
-    //         this.$emit('close')
-    //     }
-    // },
-    mounted() {
-        setTimeout(() => {
-            this.close()
-        }, 2000)
-    }
+<script setup>
+
+const emits = defineEmits(['close'])
+
+const close = () => {
+    emits.close()
 }
+
+mounted(() => {
+    setTimeout(() => {
+        close()
+    }, 2000)
+})
+
 </script>
 
 <style lang="scss" scoped>
