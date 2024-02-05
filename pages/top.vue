@@ -79,6 +79,7 @@ const err = ref(null)
 const query = ref(null)
 
 const opneConnectMember = () => {
+    console.log('opneConnectMember')
     modalFlag.value = true
 }
 
