@@ -48,7 +48,7 @@
                 <li class="link__list_item"><nuxt-link to="/privacy" class="item_container">プライバシーポリシー</nuxt-link></li>
             </ul>
         </nav>
-        <!-- 
+       
             <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember"
                 class="fixed-modal connect-confirm">
             </ModalConnectConfirm>
@@ -60,7 +60,7 @@
         
         
             <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
-        -->
+       
         <loading v-if="loading"></loading>
 
         <div class="test">
@@ -81,6 +81,7 @@ const message = ref(null)
 const loading = ref(null)
 
 const firstContacted = useState('firstContact')
+const token = useState('token')
 
 
 //　テスト用
@@ -101,7 +102,7 @@ const usePointOpen = () => {
 // point取得
 const connectMemberByLineToken = async () => {
     loading.value = true
-     const {data,error,pending} = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${this.token}`)
+     const {data,error,pending} = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${token.value}`)
      loading.value = pending.value
 
      if (!error.value) {
