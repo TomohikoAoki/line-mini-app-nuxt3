@@ -48,19 +48,20 @@
                 <li class="link__list_item"><nuxt-link to="/privacy" class="item_container">プライバシーポリシー</nuxt-link></li>
             </ul>
         </nav>
-        <!-- <Transition name="fade">
+        <!-- 
             <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember"
                 class="fixed-modal connect-confirm">
             </ModalConnectConfirm>
-        </Transition>
-        <Transition name="fade">
+       
+       
             <ModalUsePointModal v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point"
                 @usePoint="usePoint" class="fixed-modal use-point">
             </ModalUsePointModal>
-        </Transition>
-        <Transition name="fade">
+        
+        
             <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
-        </Transition> -->
+        -->
+        <loading v-if="loading"></loading>
 
         <div class="test">
             <p><span class="labeel">response</span><br> {{ response }}</p>
@@ -72,178 +73,218 @@
     </div>
 </template>
 
-<script>
+<script setup>
+const modalFlag = ref(false)
+const usePointModalFlag = ref(false)
+const point = ref(100)
+const message = ref(null)
+const loading = ref(null)
+
+const firstContacted = useState('firstContact')
 
 
-// import { mapGetters } from 'vuex'
-// import axios from 'axios'
+//　テスト用
+const response = ref(null)
+const test = ref(null)
+const err = ref(null)
+const query = ref(null)
 
-export default {
-    data() {
-        return {
-            modalFlag: false,
-            usePointModalFlag: false,
-            point: 100,
-            message: null,
-            response: null,
-            test: null,
-            err: null,
-            query: null
-        }
-    },
-    // computed: {
-    //     ...mapGetters({
-    //         token: "getToken",
-    //         member: 'getMember',
-    //         lineProfile: 'getProfile',
-    //         firstContact: 'getFirstContact',
-    //     }),
-    // },
-    // methods: {
-    //     // LINE_IDと会員情報の連携
-    //     // modalからのformDataのemitで開始
-    //     async connectMember(formData) {
-    //         this.modalFlag = false
-    //         $nuxt.$loading.start();
-
-    //         // 送信 {usrmail:string, password:string, member_id,string}
-    //         const response = await axios.get(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.usrmail}&password=${formData.password}&id_token=${this.token}`)
-    //             .catch((err) => {
-    //                 //ネットワークエラーの場合はresponseがないので
-    //                 if (!err.response) {
-    //                     this.err = err
-    //                     this.message = 'ネットワークエラー。ステータスコード拾えない'
-    //                     return err
-    //                 }
-    //                 return err.response
-    //             })
-
-    //         this.response = response.data
-
-    //         // 紐づけできた場合は、ポイントを更新
-    //         if (response.status === 200) {
-    //             // this.point = response.data.data.point
-
-    //             this.message = '紐づけが完了しました'
-    //         }
-    //         else if (response.status === 404) {
-    //             this.message = '情報が見つかりませんでした。'
-    //         }
-    //         else {
-    //             this.message = 'まだ設定していないエラーです'
-    //         }
-
-    //         $nuxt.$loading.finish();
-    //     },
-    //     // LineIDが登録されている場合、
-    //     // point取得
-    //     async connectMemberByLineToken() {
-    //         $nuxt.$loading.start();
-    //         // watchの中だからthen構文で
-    //         axios.get(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${this.token}`)
-    //             .then((response) => {
-    //                 this.response = response
-
-    //                 // this.point = response.data.data.point ?? 0
-    //                 // this.$store.dispatch('setMember', response.data.data)
-    //                 this.message = '会員情報との紐づけができました。'
-
-    //                 $nuxt.$loading.finish();
-    //             }).catch((err) => {
-    //                 // 紐づけができなかった場合
-    //                 if (!err.response) {
-    //                     this.err = err
-    //                     this.message = 'ネットワークエラー。ステータスコード拾えない'
-    //                     $nuxt.$loading.finish();
-    //                     return false
-    //                 }
-    //                 this.err = err.response
-    //                 // ひもづけを行うためのモーダルオープン
-    //                 this.modalFlag = true
-    //                 $nuxt.$loading.finish();
-    //             })
-    //     },
-    //     // QRコードリーダー起動 & ポイント追加
-    //     addPoint() {
-    //         $nuxt.$loading.start();
-    //         liff.scanCodeV2()
-    //             .then((result) => {
-    //                 if (result.value !== null) {
-    //                     // TODO: 【code_id】修正予定
-    //                     var ekanteisId = JSON.parse(result.value)['code_id'];
-    //                     // alert(ekanteisId);
-
-    //                     return this.axiosGetTotalpoints('add/195124');
-    //                     // totalpoints = axiosGet('add/'+ ekanteisId);
-    //                 }
-    //                 this.message = 'QRコードが正常に読み込まれませんでした'
-    //             })
-    //             .then((point) => {
-    //                 this.message = 'ポイントが加算されました'
-    //                 this.point = point
-    //             })
-    //             .catch((err) => {
-    //                 // どうするか？？？？
-    //                 this.err = err
-    //                 this.message = '何かしらエラー'
-    //             });
-    //         $nuxt.$loading.finish();
-    //     },
-    //     usePointOpen() {
-    //         this.usePointModalFlag = true
-    //     },
-    //     // QRコードリーダー起動 & ポイント使用
-    //     usePoint(point) {
-    //         this.usePointModalFlag = false
-    //         liff.scanCodeV2()
-    //             .then((result) => {
-    //                 if (result.value != null) {
-    //                     var val = JSON.parse(result.value);
-    //                     // 【code_id】修正予定
-    //                     var ekanteisId = val['code_id'];
-
-    //                     return this.axiosGetTotalpoints(`use/100/${point}`);
-    //                     // totalpoints = axiosGet('use/'+ ekanteisId + '/' + point);
-    //                 }
-    //                 this.message = 'QRコードが正常に読み込まれませんでした'
-    //             })
-    //             .then((returnPoint) => {
-    //                 this.message = 'ポイントが使用しました。'
-    //                 this.point = returnPoint
-    //             })
-    //             .catch((error) => {
-    //                 console.log(error)
-    //             });
-    //     },
-    //     axiosGetTotalpoints(url) {
-    //         return axios.get(`https://sysf.heartful.work/epoints/${url}`)
-    //             // Successful
-    //             .then(function (response) {
-    //                 var totalpoints = response.data['totalPoints'];
-    //                 return totalpoints;
-    //             })
-    //             // failure
-    //             .catch(function (error) {
-    //                 console.log(error)
-    //                 return error;
-    //             });
-
-    //     },
-    //     // 会員連携モーダル開く
-    //     opneConnectMember() {
-    //         this.modalFlag = true
-    //     },
-    //     closeMessage() {
-    //         this.message = null
-    //     },
-    // },
-    // async mounted() {
-    //     if (this.firstContact) {
-    //         this.connectMemberByLineToken()
-    //         this.$store.dispatch('setFirstContact')
-    //     }
-    // },
+const opneConnectMember = () => {
+    modalFlag.value = true
 }
+
+const usePointOpen = () => {
+    usePointModalFlag.value = true
+}
+
+// LineIDが登録されている場合、
+// point取得
+const connectMemberByLineToken = async () => {
+    loading.value = true
+     const {data,error,pending} = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${this.token}`)
+     loading.value = pending.value
+
+     if (!error.value) {
+        response.value = data
+        message.value = '会員情報との紐づけができました。'
+        // this.point = data.data.point ?? 0
+        loading.value = false
+
+        return
+     }
+
+     err.value = error.value
+     message.value = 'ネットワークエラー or 紐づけ情報がない'
+
+     modalFlag.value = true
+
+     loading.value = false
+
+}
+
+onMounted(() => {
+    if (!firstContacted.value) {
+        connectMemberByLineToken()
+        firstContacted.value = true
+    }
+})
+
+
+// export default {
+    
+//     computed: {
+//         ...mapGetters({
+//             token: "getToken",
+//             member: 'getMember',
+//             lineProfile: 'getProfile',
+//             firstContact: 'getFirstContact',
+//         }),
+//     },
+//     methods: {
+//         // LINE_IDと会員情報の連携
+//         // modalからのformDataのemitで開始
+//         async connectMember(formData) {
+//             this.modalFlag = false
+//             $nuxt.$loading.start();
+
+//             // 送信 {usrmail:string, password:string, member_id,string}
+//             const response = await axios.get(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.usrmail}&password=${formData.password}&id_token=${this.token}`)
+//                 .catch((err) => {
+//                     //ネットワークエラーの場合はresponseがないので
+//                     if (!err.response) {
+//                         this.err = err
+//                         this.message = 'ネットワークエラー。ステータスコード拾えない'
+//                         return err
+//                     }
+//                     return err.response
+//                 })
+
+//             this.response = response.data
+
+//             // 紐づけできた場合は、ポイントを更新
+//             if (response.status === 200) {
+//                 // this.point = response.data.data.point
+
+//                 this.message = '紐づけが完了しました'
+//             }
+//             else if (response.status === 404) {
+//                 this.message = '情報が見つかりませんでした。'
+//             }
+//             else {
+//                 this.message = 'まだ設定していないエラーです'
+//             }
+
+//             $nuxt.$loading.finish();
+//         },
+//         // LineIDが登録されている場合、
+//         // point取得
+//         async connectMemberByLineToken() {
+//             $nuxt.$loading.start();
+//             // watchの中だからthen構文で
+//             axios.get(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${this.token}`)
+//                 .then((response) => {
+//                     this.response = response
+
+//                     // this.point = response.data.data.point ?? 0
+//                     // this.$store.dispatch('setMember', response.data.data)
+//                     this.message = '会員情報との紐づけができました。'
+
+//                     $nuxt.$loading.finish();
+//                 }).catch((err) => {
+//                     // 紐づけができなかった場合
+//                     if (!err.response) {
+//                         this.err = err
+//                         this.message = 'ネットワークエラー。ステータスコード拾えない'
+//                         $nuxt.$loading.finish();
+//                         return false
+//                     }
+//                     this.err = err.response
+//                     // ひもづけを行うためのモーダルオープン
+//                     this.modalFlag = true
+//                     $nuxt.$loading.finish();
+//                 })
+//         },
+//         // QRコードリーダー起動 & ポイント追加
+//         addPoint() {
+//             $nuxt.$loading.start();
+//             liff.scanCodeV2()
+//                 .then((result) => {
+//                     if (result.value !== null) {
+//                         // TODO: 【code_id】修正予定
+//                         var ekanteisId = JSON.parse(result.value)['code_id'];
+//                         // alert(ekanteisId);
+
+//                         return this.axiosGetTotalpoints('add/195124');
+//                         // totalpoints = axiosGet('add/'+ ekanteisId);
+//                     }
+//                     this.message = 'QRコードが正常に読み込まれませんでした'
+//                 })
+//                 .then((point) => {
+//                     this.message = 'ポイントが加算されました'
+//                     this.point = point
+//                 })
+//                 .catch((err) => {
+//                     // どうするか？？？？
+//                     this.err = err
+//                     this.message = '何かしらエラー'
+//                 });
+//             $nuxt.$loading.finish();
+//         },
+//         usePointOpen() {
+//             this.usePointModalFlag = true
+//         },
+//         // QRコードリーダー起動 & ポイント使用
+//         usePoint(point) {
+//             this.usePointModalFlag = false
+//             liff.scanCodeV2()
+//                 .then((result) => {
+//                     if (result.value != null) {
+//                         var val = JSON.parse(result.value);
+//                         // 【code_id】修正予定
+//                         var ekanteisId = val['code_id'];
+
+//                         return this.axiosGetTotalpoints(`use/100/${point}`);
+//                         // totalpoints = axiosGet('use/'+ ekanteisId + '/' + point);
+//                     }
+//                     this.message = 'QRコードが正常に読み込まれませんでした'
+//                 })
+//                 .then((returnPoint) => {
+//                     this.message = 'ポイントが使用しました。'
+//                     this.point = returnPoint
+//                 })
+//                 .catch((error) => {
+//                     console.log(error)
+//                 });
+//         },
+//         axiosGetTotalpoints(url) {
+//             return axios.get(`https://sysf.heartful.work/epoints/${url}`)
+//                 // Successful
+//                 .then(function (response) {
+//                     var totalpoints = response.data['totalPoints'];
+//                     return totalpoints;
+//                 })
+//                 // failure
+//                 .catch(function (error) {
+//                     console.log(error)
+//                     return error;
+//                 });
+
+//         },
+//         // 会員連携モーダル開く
+//         opneConnectMember() {
+//             this.modalFlag = true
+//         },
+//         closeMessage() {
+//             this.message = null
+//         },
+//     },
+//     async mounted() {
+//         if (this.firstContact) {
+//             this.connectMemberByLineToken()
+//             this.$store.dispatch('setFirstContact')
+//         }
+//     },
+// }
 
 </script>
 

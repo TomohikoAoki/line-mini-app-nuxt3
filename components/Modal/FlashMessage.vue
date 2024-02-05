@@ -1,9 +1,13 @@
 <template>
-    <div class="modal-container">
-        <div class="modal-content">
-            <slot></slot>
-        </div>
-    </div>
+    <Teleport>
+        <Transition name="fade">
+            <div class="modal-container">
+                <div class="modal-content">
+                    <slot></slot>
+                </div>
+            </div>
+        </Transition>
+    </Teleport>
 </template>
 
 <script>
@@ -40,5 +44,15 @@ export default {
         text-align: center;
 
     }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

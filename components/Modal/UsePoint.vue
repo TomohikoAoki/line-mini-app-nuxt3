@@ -1,7 +1,9 @@
 <template>
-    <div class="modal-container">
-        テスト
-        <!-- <div class="modal-content">
+    <teleport to="body">
+        <Transition name="fade">
+            <div class="modal-container">
+                テスト
+                <!-- <div class="modal-content">
             <h2 class="modal-title">ポイントを使用する</h2>
             <p class="first-text">
                 現在の保有ポイント: {{ totalPoint }}
@@ -53,7 +55,9 @@
                 </button>
             </div>
         </div> -->
-    </div>
+            </div>
+        </Transition>
+    </teleport>
 </template>
 
 <script>

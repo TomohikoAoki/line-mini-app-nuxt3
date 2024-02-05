@@ -1,7 +1,9 @@
 <template>
-    <div class="modal-container">
-        テスト
-        <!-- <div class="modal-content">
+    <Teleport to="#app">
+        <Transition name="fade">
+            <div class="modal-container">
+                テスト
+                <!-- <div class="modal-content">
             <h2 class="modal-title">ハートフル会員に連携して<br>ポイントを合算する</h2>
             <p class="first-text">
                 ハートフルポイントをすでにお持ちの方でこれまで貯めていたポイントと合算してポイントを貯めたい方はID連携してください。<br>
@@ -49,7 +51,9 @@
                 </button>
             </div>
         </div> -->
-    </div>
+            </div>
+        </Transition>
+    </Teleport>
 </template>
 
 <script>
@@ -261,5 +265,15 @@ import {
 
         }
     }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
