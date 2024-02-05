@@ -21,7 +21,7 @@ onMounted(() => {
 
     $liffInit
         .then(async () => {
-            sdkVersion.value = $liff.getVersion();
+            sdkVersion.value = await $liff.getVersion();
 
             token.value = await $liff.getIDToken();
             profileData.value = await $liff.getDecodedIDToken()
