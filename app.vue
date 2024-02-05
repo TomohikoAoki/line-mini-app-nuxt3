@@ -9,11 +9,13 @@
 
 const router = useRouter()
 
-useState('loading', () => false)
+const loading = useState('loading', () => false)
 
 
 onMounted(() => {
   const { $liffInit, $liff } = useNuxtApp()
+
+  loading.value = true
 
   $liffInit
     .then(async () => {
