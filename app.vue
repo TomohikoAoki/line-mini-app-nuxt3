@@ -25,10 +25,13 @@ onMounted(() => {
       useState('lineToken', () => token)
       useState('userProfile', () => profileData)
 
+      loading.value = false
+
       router.push('/top')
     })
     .catch((error) => {
       console.error(error);
+      loading.value = false
       // this.showButton = true;
     });
 
