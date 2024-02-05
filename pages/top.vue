@@ -61,7 +61,7 @@
         
             <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
        
-        <loading v-if="loading"></loading>
+        <Loading v-if="loading"></Loading>
 
         <div class="test">
             <p><span class="labeel">response</span><br> {{ response }}</p>
