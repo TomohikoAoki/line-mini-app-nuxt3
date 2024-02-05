@@ -18,7 +18,7 @@ const close = () => {
     emits.close()
 }
 
-mounted(() => {
+onMounted(() => {
     setTimeout(() => {
         close()
     }, 2000)
