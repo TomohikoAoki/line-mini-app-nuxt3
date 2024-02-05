@@ -50,12 +50,12 @@
         </nav>
        
             <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember"
-                class="fixed-modal connect-confirm">
+                >
             </ModalConnectConfirm>
        
        
             <ModalUsePoint v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point"
-                @usePoint="usePoint" class="fixed-modal use-point">
+                @usePoint="usePoint">
             </ModalUsePoint>
         
         
@@ -420,22 +420,7 @@ $baseColor : #efb94b;
     }
 }
 
-.fixed-modal {
-    width: 100vw;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1001;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: auto;
 
-    &.connect-confirm {}
-
-    &.use-point {}
-}
 
 .test {
     width: 100%;
@@ -452,31 +437,5 @@ $baseColor : #efb94b;
     color: #fff;
 }
 
-.fade-enter {
-    /*開始の状態を指定する*/
-    opacity: 0;
-    transform: translateY(-20px);
-}
 
-.fade-enter-to {
-    /*終了の状態を指定する*/
-    opacity: 1;
-}
-
-.fade-enter-active {
-    /*動作（イージングや時間）を指定する*/
-    transition: opacity 250ms ease-out, transform 250ms ease-out;
-}
-
-.fade-leave {
-    opacity: 1;
-}
-
-.fade-leave-to {
-    opacity: 0;
-}
-
-.fade-leave-active {
-    transition: opacity 250ms ease-out;
-}
 </style>
