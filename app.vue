@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Loading></Loading>
     <NuxtPage />
   </div>
 </template>
@@ -7,6 +8,8 @@
 <script setup>
 
 const router = useRouter()
+
+useState('loading', () => false)
 
 
 onMounted(() => {

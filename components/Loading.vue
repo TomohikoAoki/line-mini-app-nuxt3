@@ -1,25 +1,15 @@
 <template lang="html">
-  <div class="loader-background" v-if="loading">
-    <div class="loader">
-      <img src="~assets/images/spinner_dark.svg">
+  <teleport to="#app">
+    <div class="loader-background" v-if="loading">
+      <div class="loader">
+        <img src="~assets/images/spinner_dark.svg">
+      </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    loading: false,
-  }),
-  methods: {
-    start() {
-      this.loading = true;
-    },
-    finish() {
-      this.loading = false;
-    },
-  },
-};
+<script setup>
+const loading = useState('loading')
 </script>
 
 <style scoped>

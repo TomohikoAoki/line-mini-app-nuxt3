@@ -42,26 +42,14 @@
         </div>
         <nav class="link">
             <ul class="link__list">
-                <!-- <li class="link__list_item"><span class="item_container" @click="opneConnectMember">会員連携</span></li> -->
-                <li class="link__list_item"><span class="item_container">会員連携</span></li>
+                <li class="link__list_item"><span class="item_container" @click="opneConnectMember">会員連携</span></li>
                 <li class="link__list_item"><nuxt-link to="/terms" class="item_container">利用規約</nuxt-link></li>
                 <li class="link__list_item"><nuxt-link to="/privacy" class="item_container">プライバシーポリシー</nuxt-link></li>
             </ul>
         </nav>
-       
-            <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember"
-                >
-            </ModalConnectConfirm>
-       
-       
-            <ModalUsePoint v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point"
-                @usePoint="usePoint">
-            </ModalUsePoint>
-        
-        
-            <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
-       
-        <Loading v-if="loading"></Loading>
+        <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember"></ModalConnectConfirm>
+        <ModalUsePoint v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point" @usePoint="usePoint"></ModalUsePoint>
+        <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
 
         <div class="test">
             <p><span class="labeel">response</span><br> {{ response }}</p>
@@ -78,7 +66,7 @@ const modalFlag = ref(false)
 const usePointModalFlag = ref(false)
 const point = ref(100)
 const message = ref(null)
-const loading = ref(null)
+const loading = useState('loading')
 
 const firstContacted = useState('firstContact')
 const token = useState('token')
@@ -133,6 +121,18 @@ onMounted(() => {
         firstContacted.value = true
     }
 })
+
+const connectMember = async (data) => {
+    modalFlag.value = false
+    loading.value = true
+
+    const {data: res,error,pending} = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${data.usrmail}&password=${data.password}&id_token=${token.value}`)
+
+    loading.value = pending.value
+
+    console.log(res.value)
+    console.log(error.value)
+}
 
 
 // export default {
