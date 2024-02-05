@@ -33,6 +33,7 @@ onMounted(() => {
     left: 0;
     width: 100vw;
     height: 100vh;
+    z-index: 1001;
 
     .modal-content {
         position: absolute;

@@ -54,9 +54,9 @@
             </ModalConnectConfirm>
        
        
-            <ModalUsePointModal v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point"
+            <ModalUsePoint v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point"
                 @usePoint="usePoint" class="fixed-modal use-point">
-            </ModalUsePointModal>
+            </ModalUsePoint>
         
         
             <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>

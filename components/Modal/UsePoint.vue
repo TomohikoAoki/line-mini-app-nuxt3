@@ -153,6 +153,9 @@
 .modal-container {
     width: 100vw;
     padding: 50px 0 150px 0;
+    z-index: 1001;
+    position: fixed;
+
 
     .modal-content {
         padding: 2em 1em;

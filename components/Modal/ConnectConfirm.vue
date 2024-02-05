@@ -137,6 +137,8 @@ import {
 .modal-container {
     width: 100vw;
     padding: 50px 0 150px 0;
+    position: fixed;
+    z-index: 1001;
 
 
     .modal-content {
