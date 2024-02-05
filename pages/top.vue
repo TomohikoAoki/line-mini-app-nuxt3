@@ -42,12 +42,12 @@
         </div>
         <nav class="link">
             <ul class="link__list">
-                <li class="link__list_item"><span class="item_container" @click="opneConnectMember">会員連携</span></li>
+                <li class="link__list_item"><span class="item_container" @click="openConnectMember">会員連携</span></li>
                 <li class="link__list_item"><nuxt-link to="/terms" class="item_container">利用規約</nuxt-link></li>
                 <li class="link__list_item"><nuxt-link to="/privacy" class="item_container">プライバシーポリシー</nuxt-link></li>
             </ul>
         </nav>
-        <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember"></ModalConnectConfirm>
+        <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember" @close="modalFlag"></ModalConnectConfirm>
         <ModalUsePoint v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point" @usePoint="usePoint"></ModalUsePoint>
         <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
 
@@ -78,7 +78,7 @@ const test = ref(null)
 const err = ref(null)
 const query = ref(null)
 
-const opneConnectMember = () => {
+const openConnectMember = () => {
     console.log('opneConnectMember')
     modalFlag.value = true
 }
@@ -133,6 +133,9 @@ const connectMember = async (data) => {
 
     console.log(res.value)
     console.log(error.value)
+
+    response.value = res.value
+    err.value = error.value
 }
 
 

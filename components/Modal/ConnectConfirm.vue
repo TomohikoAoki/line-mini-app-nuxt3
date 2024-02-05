@@ -44,7 +44,7 @@
                             <span class="close-icon">
                                 <SvgBase icon-name="icon-navi-add" viewBox="0 -960 960 960" iconColor="#504848;"
                                     iconTitle="モーダル閉じる">
-                                    <SvgDataIconClose></SvgDataIconClose>
+                                    <SvgDataClose></SvgDataClose>
                                 </SvgBase>
                             </span>
                             <span class="close-text">CLOSE</span>
@@ -200,6 +200,10 @@ export default {
                 }
             }
         }
+    }
+
+    .btn {
+        margin: 0 auto;
     }
 
 
