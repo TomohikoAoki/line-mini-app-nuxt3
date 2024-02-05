@@ -15,7 +15,7 @@
 const emits = defineEmits(['close'])
 
 const close = () => {
-    emits.close()
+    emits('close', true)
 }
 
 onMounted(() => {

@@ -98,6 +98,10 @@ const usePointOpen = () => {
     usePointModalFlag.value = true
 }
 
+const closeMessage = () => {
+    message.value = null
+}
+
 // LineIDが登録されている場合、
 // point取得
 const connectMemberByLineToken = async () => {
