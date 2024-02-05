@@ -134,6 +134,8 @@ export default {
     position: fixed;
     z-index: 1002;
     height: 100vh;
+    top: 0;
+    left: 0;
 
 
     .modal-content {

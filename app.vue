@@ -40,3 +40,9 @@ onMounted(() => {
 })
 
 </script>
+
+<style lang="scss" scoped>
+#app {
+  position: relative;
+}
+</style>
