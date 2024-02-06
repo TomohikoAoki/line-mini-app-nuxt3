@@ -133,7 +133,8 @@ export default {
     padding: 50px 0 150px 0;
     position: fixed;
     z-index: 1002;
-    height: 100vh;
+    height: 100%;
+    overflow-y: scroll;
     top: 0;
     left: 0;
 
