@@ -94,6 +94,7 @@ export default {
             this.$emit('formData', this.formData)
         },
         close() {
+            clearAllBodyScrollLocks()
             this.$emit('close')
         },
         // validation
