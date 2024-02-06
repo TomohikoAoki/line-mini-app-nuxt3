@@ -94,7 +94,7 @@ export default {
             this.$emit('formData', this.formData)
         },
         close() {
-            this.$emit('input', false)
+            this.$emit('close')
         },
         // validation
         fieldValidation(field) {

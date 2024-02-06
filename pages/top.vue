@@ -47,7 +47,7 @@
                 <li class="link__list_item"><nuxt-link to="/privacy" class="item_container">プライバシーポリシー</nuxt-link></li>
             </ul>
         </nav>
-        <ModalConnectConfirm v-model="modalFlag" v-if="modalFlag" @formData="connectMember" @close="modalFlag"></ModalConnectConfirm>
+        <ModalConnectConfirm v-if="modalFlag" @formData="connectMember" @close="closeConnect"></ModalConnectConfirm>
         <ModalUsePoint v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point" @usePoint="usePoint"></ModalUsePoint>
         <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
 
@@ -66,8 +66,8 @@ const modalFlag = ref(false)
 const usePointModalFlag = ref(false)
 const point = ref(100)
 const message = ref(null)
-const loading = useState('loading')
 
+const loading = useState('loading')
 const firstContacted = useState('firstContact')
 const token = useState('token')
 
@@ -89,6 +89,10 @@ const usePointOpen = () => {
 
 const closeMessage = () => {
     message.value = null
+}
+
+const closeConnect = () => {
+    modalFlag.value = false
 }
 
 // LineIDが登録されている場合、
