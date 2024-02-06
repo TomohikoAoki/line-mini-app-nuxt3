@@ -13,11 +13,13 @@
 
 <script setup>
 
-const loading = useState('loading', () => false)
+useState('loading', () => false)
 
 </script>
 
 <style lang="scss" scoped>
+$baseColor : #c3c1c5;
+
 #app {
   position: relative;
 

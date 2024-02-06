@@ -16,10 +16,6 @@
 const router = useRouter()
 const loading = useState('loading')
 
-useEffect(() => {
-    loading.value = false
-}, [])
-
 onMounted(() => {
     const { $liffInit, $liff } = useNuxtApp()
 
