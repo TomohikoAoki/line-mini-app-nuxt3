@@ -92,7 +92,7 @@ const connectMemberByLineToken = async () => {
     if (!error.value) {
         response.value = data
         message.value = '会員情報との紐づけができました。'
-        userState.value.point = data.data.point === undefined ? 100 : data.data.point
+        userState.value.point = 100
         loading.value = false
 
         return
