@@ -87,7 +87,7 @@ const fieldValidation = (field) => {
         return
     }
     // 使用ポイントがtotalPointを超えた場合
-    if (props.propsData.point < formData.value[field]) {
+    if (getUserPoint() < formData.value[field]) {
         messageNumber.value[field] = 2
         validation.value[field] = false
         return
