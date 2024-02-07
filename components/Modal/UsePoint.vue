@@ -1,171 +1,121 @@
 <template>
-    <teleport to="#app">
-        <Transition name="fade">
-            <div class="modal-container">
-                テスト
-                <div class="modal-content">
-                    <h2 class="modal-title">ポイントを使用する</h2>
-                    <p class="first-text">
-                        現在の保有ポイント: {{ totalPoint }}
-                    </p>
-                    <div class="use-point-main">
-                        <Transition name="fade">
-                            <form class="form" v-if="!confirmFlag">
-                                <div class="form-group">
-                                    <label class="form-label">利用ポイント入力</label>
-                                    <div class="form-content">
-                                        <input class="input-text" v-model="formData.point" type="text" inputmode="numeric"
-                                            @blur="fieldValidation('point')"
-                                            :class="{ valid: validation.point, invalid: validation.point === false }">
-                                        <div class="error"><span v-if="validation.point === false">{{
-                                            validationMessage.point[messageNumber.point] }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button @click.prevent="confirm" class="form-btn" :disabled="!validation.point"
-                                    :class="{ disable: !validation.point }">
-                                    確認
-                                </button>
-                            </form>
-                            <div v-else class="confirm">
-                                <div class="confirm-text-area">
-                                    <p><span>{{ formData.point }}&nbsp;point</span><br>を利用します。</p>
-                                    <p>よろしいですか？</p>
-                                </div>
-                                <div class="confirm-btn-area">
-                                    <button @click.prevent="usePoint" class="btn2 connect">
-                                        送信
-                                    </button>
-                                    <button @click.prevent="correction" class="btn2 correction">
-                                        修正
-                                    </button>
-                                </div>
+    <div class="content">
+        <h2 class="modal-title">ポイントを使用する</h2>
+        <p class="first-text">
+            現在の保有ポイント: {{ propsData.point }}
+        </p>
+        <div class="use-point-main">
+            <Transition name="fade">
+                <form class="form" v-if="!confirmFlag">
+                    <div class="form-group">
+                        <label class="form-label">利用ポイント入力</label>
+                        <div class="form-content">
+                            <input class="input-text" v-model="formData.point" type="text" inputmode="numeric"
+                                @blur="fieldValidation('point')"
+                                :class="{ valid: validation.point, invalid: validation.point === false }">
+                            <div class="error"><span v-if="validation.point === false">{{
+                                validationMessage.point[messageNumber.point] }}</span>
                             </div>
-                        </Transition>
+                        </div>
                     </div>
-                    <div class="close-area">
-                        <button @click="close" class="close">
-                            <span class="close-icon">
-                                <SvgBase icon-name="icon-navi-add" viewBox="0 -960 960 960" iconColor="#504848;"
-                                    iconTitle="モーダル閉じる">
-                                    <SvgDataClose></SvgDataClose>
-                                </SvgBase>
-                            </span>
-                            <span class="close-text">CLOSE</span>
+                    <button @click.prevent="confirm" class="form-btn" :disabled="!validation.point"
+                        :class="{ disable: !validation.point }">
+                        確認
+                    </button>
+                </form>
+                <div v-else class="confirm">
+                    <div class="confirm-text-area">
+                        <p><span>{{ formData.point }}&nbsp;point</span><br>を利用します。</p>
+                        <p>よろしいですか？</p>
+                    </div>
+                    <div class="confirm-btn-area">
+                        <button @click.prevent="usePoint" class="btn2 connect">
+                            送信
+                        </button>
+                        <button @click.prevent="correction" class="btn2 correction">
+                            修正
                         </button>
                     </div>
                 </div>
-            </div>
-        </Transition>
-    </teleport>
+            </Transition>
+        </div>
+    </div>
 </template>
 
-<script>
-import {
-    disableBodyScroll,
-    clearAllBodyScrollLocks,
-} from "body-scroll-lock";
+<script setup>
 
+const formData = ref({
+    point: null
+})
+const validation = ref({
+    point: null,
+})
+const validationMessage = ref({
+    point: ['必ず入力してください。', '半角数字で整数を入力してください。', '利用できるポイントを超えています'],
+})
+const messageNumber = ref({
+    point: null,
+})
+const confirmFlag = ref(false)
 
-export default {
-    data() {
-        return {
-            formData: {
-                point: null,
-            },
-            // validation flag
-            validation: {
-                point: null,
-            },
-            // validetion message
-            validationMessage: {
-                point: ['必ず入力してください。', '半角数字で整数を入力してください。', '利用できるポイントを超えています'],
-            },
-            // messageのための番号
-            messageNumber: {
-                point: null,
-            },
-            confirmFlag: false,
-        }
-    },
-    props: {
-        totalPoint: {
-            type: Number,
-            require: true,
-        }
-    },
-    methods: {
-        usePoint() {
-            this.$emit('usePoint', this.formData.point)
-        },
-        confirm() {
-            this.confirmFlag = true
-        },
-        correction() {
-            this.confirmFlag = false
-        },
-        close() {
-            this.$emit('close')
-        },
-        // validation
-        fieldValidation(field) {
-            // validationの形式
-            const rgx = {
-                point: "\^[1-9][0-9]*$"
-            }
+const props = defineProps({
+    propsData: {
+        type: Object,
+        require: true,
+    }
+})
 
-            // 空の場合
-            if (this.formData[field] === '') {
-                this.messageNumber[field] = 0
-                this.validation[field] = false
-                return
-            }
-            // 使用ポイントがtotalPointを超えた場合
-            if (this.totalPoint < this.formData[field]) {
-                this.messageNumber[field] = 2
-                this.validation[field] = false
-                return
-            }
-            // mail 正規表現を合わない場合
-            const rgxObj = new RegExp(rgx[field])
-            this.validation[field] = rgxObj.test(this.formData[field])
+const emits = defineEmits(['usePoint', 'close'])
 
-            this.messageNumber[field] = this.validation[field] ? null : 1
-        }
-    },
-    mounted() {
-        const confirmModal = document.querySelector(".modal-container");
-        disableBodyScroll(confirmModal);
-    },
-    beforeDestroy() {
-        clearAllBodyScrollLocks();
-    },
+const usePoint = () => {
+    emits('usePoint', formData.value.point)
 }
+
+const confirm = () => {
+    confirmFlag.value = true
+}
+
+const correction = () => {
+    confirmFlag.value = false
+}
+
+const fieldValidation = (field) => {
+    // validationの形式
+    const rgx = {
+        point: "\^[1-9][0-9]*$"
+    }
+
+    // 空の場合
+    if (formData.value[field] === '') {
+        messageNumber.value[field] = 0
+        validation.value[field] = false
+        return
+    }
+    // 使用ポイントがtotalPointを超えた場合
+    if (props.propsData.point < formData.value[field]) {
+        messageNumber.value[field] = 2
+        validation.value[field] = false
+        return
+    }
+    // mail 正規表現を合わない場合
+    const rgxObj = new RegExp(rgx[field])
+    validation.value[field] = rgxObj.test(formData.value[field])
+
+    messageNumber.value[field] = validation.value[field] ? null : 1
+}
+
+
 </script>
 
 <style lang="scss" scoped>
-.modal-container {
-    width: 100vw;
-    padding: 50px 0 150px 0;
-    z-index: 1001;
-    position: fixed;
+.content {
+    height: 300px;
+}
 
-
-    .modal-content {
-        padding: 2em 1em;
-        width: 90%;
-        margin: 0 auto;
-        min-height: 80%;
-        background-color: #fff;
-        border-radius: 10px;
-        position: relative;
-
-        .modal-title {
-            font-weight: bold;
-            text-align: center;
-            padding: 0 0 1em 0;
-        }
-    }
+.modal-title {
+    font-weight: bold;
+    text-align: center;
+    padding: 0 0 1em 0;
 }
 
 .first-text {
@@ -303,55 +253,5 @@ export default {
     left: 50%;
     transform: translateX(-50%);
 
-
-    .close {
-        width: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-        color: #504848;
-
-        .close-icon {
-            display: block;
-            width: 30px;
-            margin: 0 0.2em;
-        }
-
-        .close-text {
-            display: block;
-            font-size: 18px;
-            margin: 0 0.2em;
-            color: #504848;
-
-        }
-    }
-}
-
-.fade-enter {
-    /*開始の状態を指定する*/
-    opacity: 0;
-}
-
-.fade-enter-to {
-    /*終了の状態を指定する*/
-    opacity: 1;
-}
-
-.fade-enter-active {
-    /*動作（イージングや時間）を指定する*/
-    transition: opacity 250ms ease-out;
-}
-
-.fade-leave {
-    opacity: 1;
-}
-
-.fade-leave-to {
-    opacity: 0;
-}
-
-.fade-leave-active {
-    transition: opacity 50ms ease-out;
 }
 </style>

@@ -29,7 +29,7 @@
                 </div>
                 <p class="navi-item__text">ポイントを<br>貯める</p>
             </div>
-            <div class="navi-item" @click="usePointOpen">
+            <div class="navi-item" @click="openModal(1, { 'point': point })">
                 <div class="navi-item__icon">
                     <SvgBase icon-name="icon-navi-add" viewBox="0 0 237 320.8" iconColor="#efb94b" iconTitle="ポイントを貯める">
                         <SvgDataIconNaviUse></SvgDataIconNaviUse>
@@ -40,15 +40,12 @@
         </div>
         <nav class="link">
             <ul class="link__list">
-                <li class="link__list_item"><span class="item_container" @click="openConnectMember">会員連携</span></li>
+                <li class="link__list_item"><span class="item_container" @click="openModal(0)">会員連携</span></li>
                 <li class="link__list_item"><nuxt-link to="/terms" class="item_container">利用規約</nuxt-link></li>
                 <li class="link__list_item"><nuxt-link to="/privacy" class="item_container">プライバシーポリシー</nuxt-link></li>
             </ul>
         </nav>
-        <ModalConnectConfirm v-if="modalFlag" @formData="connectMember" @close="closeConnect"></ModalConnectConfirm>
-        <ModalUsePoint v-model="usePointModalFlag" v-if="usePointModalFlag" :totalPoint="point" @usePoint="usePoint"
-            @close="closeUsePoint">
-        </ModalUsePoint>
+        <ModalBase></ModalBase>
         <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
 
         <div class="test">
@@ -62,8 +59,6 @@
 </template>
 
 <script setup>
-const modalFlag = ref(false)
-const usePointModalFlag = ref(false)
 const point = ref(100)
 const message = ref(null)
 
@@ -72,6 +67,8 @@ const loading = useState('loading')
 const firstContacted = useState('firstContact')
 const token = useState('token')
 
+const { openModal } = useModal()
+
 
 //　テスト用
 const response = ref(null)
@@ -79,25 +76,11 @@ const test = ref(null)
 const err = ref(null)
 const query = ref(null)
 
-const openConnectMember = () => {
-    modalFlag.value = true
-}
-
-const usePointOpen = () => {
-    usePointModalFlag.value = true
-}
 
 const closeMessage = () => {
     message.value = null
 }
 
-const closeConnect = () => {
-    modalFlag.value = false
-}
-
-const closeUsePoint = () => {
-    usePointModalFlag.value = false
-}
 
 // LineIDが登録されている場合、
 // point取得
