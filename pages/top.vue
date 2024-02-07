@@ -46,8 +46,6 @@
             </ul>
         </nav>
         <ModalBase></ModalBase>
-        <ModalFlashMessage v-if="message" @close="closeMessage">{{ message }}</ModalFlashMessage>
-
         <div class="test">
             <p><span class="labeel">response</span><br> {{ response }}</p>
             <p><span class="labeel">err</span><br>{{ err }}</p>

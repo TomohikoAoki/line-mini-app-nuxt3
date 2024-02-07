@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Loading></Loading>
+    <ModalFlashMessage></ModalFlashMessage>
     <NuxtPage />
     <footer class="footer">
       <p class="copy-right">Copyright © 2023 占いハートフル All Rights Reserved.</p>
