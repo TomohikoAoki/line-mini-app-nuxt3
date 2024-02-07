@@ -3,7 +3,7 @@
         <Transition name="fade">
             <div v-if="isVisible.visible" class="modal-container">
                 <div class="modal-content">
-                    <component :is="modalTyle(isVisible.number)" :propsData="isVisible.propsData" @emitData="emitData">
+                    <component :is="modalTyle(isVisible.number)" @emitData="emitData">
                     </component>
                     <button @click="close" class="close">
                         <span class="close-icon">

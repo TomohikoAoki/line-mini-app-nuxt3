@@ -10,7 +10,7 @@
                 </div>
                 <div class="point-content">
                     <p class="current-point">現在のポイント:</p>
-                    <p class="point-display"><span class="point">{{ point }}</span><span class="pt">pt</span></p>
+                    <p class="point-display"><span class="point">{{ getUserPoint() }}</span><span class="pt">pt</span></p>
                 </div>
                 <div>
                     <SvgBase icon-name="display-point-bottom" viewBox="0 0 258.5 35" iconColor="#efb94b"
@@ -29,7 +29,7 @@
                 </div>
                 <p class="navi-item__text">ポイントを<br>貯める</p>
             </div>
-            <div class="navi-item" @click="openModal(1, { 'point': point })">
+            <div class="navi-item" @click="openModal(1)">
                 <div class="navi-item__icon">
                     <SvgBase icon-name="icon-navi-add" viewBox="0 0 237 320.8" iconColor="#efb94b" iconTitle="ポイントを貯める">
                         <SvgDataIconNaviUse></SvgDataIconNaviUse>
@@ -65,7 +65,7 @@ const message = ref(null)
 const { $liff } = useNuxtApp()
 const loading = useState('loading')
 const firstContacted = useState('firstContact')
-const token = useState('token')
+const { userState, getUserToken, getUserPoint } = useUser()
 
 const { openModal } = useModal()
 
@@ -86,13 +86,13 @@ const closeMessage = () => {
 // point取得
 const connectMemberByLineToken = async () => {
     loading.value = true
-    const { data, error, pending } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${token.value}`)
+    const { data, error, pending } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
     loading.value = pending.value
 
     if (!error.value) {
         response.value = data
         message.value = '会員情報との紐づけができました。'
-        // this.point = data.data.point ?? 0
+        userState.value.point = data.data.point ?? 100
         loading.value = false
 
         return

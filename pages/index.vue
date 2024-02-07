@@ -16,20 +16,23 @@
 const router = useRouter()
 const loading = useState('loading')
 
+const { userState } = useUser()
+
+
 onMounted(() => {
     const { $liffInit, $liff } = useNuxtApp()
 
     loading.value = true
 
+
     $liffInit
         .then(async () => {
             const sdkVersion = await $liff.getVersion();
 
-            const token = await $liff.getIDToken();
-            const profileData = await $liff.getDecodedIDToken()
+            userState.value.token = await $liff.getIDToken();
 
-            useState('lineToken', () => token)
-            useState('userProfile', () => profileData)
+            const profileData = await $liff.getDecodedIDToken()
+            userState.value.name = profileData.name
 
             loading.value = false
 

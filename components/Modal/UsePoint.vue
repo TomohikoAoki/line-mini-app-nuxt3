@@ -2,7 +2,7 @@
     <div class="content">
         <h2 class="modal-title">ポイントを使用する</h2>
         <p class="first-text">
-            現在の保有ポイント: {{ propsData.point }}
+            現在の保有ポイント: {{ getUserPoint() }}
         </p>
         <div class="use-point-main">
             <Transition name="fade">
@@ -58,12 +58,7 @@ const messageNumber = ref({
 })
 const confirmFlag = ref(false)
 
-const props = defineProps({
-    propsData: {
-        type: Object,
-        require: true,
-    }
-})
+const { getUserPoint } = useUser()
 
 const emits = defineEmits(['usePoint', 'close'])
 
