@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-content">
+    <div class="content">
         <h2 class="modal-title">ハートフル会員に連携して<br>ポイントを合算する</h2>
         <p class="first-text">
             ハートフルポイントをすでにお持ちの方でこれまで貯めていたポイントと合算してポイントを貯めたい方はID連携してください。<br>
