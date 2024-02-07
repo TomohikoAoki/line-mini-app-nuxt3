@@ -46,6 +46,7 @@
             </ul>
         </nav>
         <ModalBase></ModalBase>
+        <ModalFlashMessage></ModalFlashMessage>
         <div class="test">
             <p><span class="labeel">response</span><br> {{ response }}</p>
             <p><span class="labeel">err</span><br>{{ err }}</p>
