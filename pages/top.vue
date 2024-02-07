@@ -59,8 +59,6 @@
 </template>
 
 <script setup>
-const point = ref(100)
-const message = ref(null)
 
 const { $liff } = useNuxtApp()
 const loading = useState('loading')
@@ -68,6 +66,7 @@ const firstContacted = useState('firstContact')
 const { userState, getUserToken, getUserPoint } = useUser()
 
 const { openModal } = useModal()
+const { setFlashMessage } = useFlashMessage()
 
 
 //　テスト用
@@ -91,7 +90,7 @@ const connectMemberByLineToken = async () => {
 
     if (!error.value) {
         response.value = data
-        message.value = '会員情報との紐づけができました。'
+        setFlashMessage('会員情報との紐づけができました。')
         userState.value.point = 100
         loading.value = false
 
@@ -99,11 +98,10 @@ const connectMemberByLineToken = async () => {
     }
 
     err.value = error.value
-    message.value = 'ネットワークエラー or 紐づけ情報がない'
-
-    modalFlag.value = true
-
+    setFlashMessage('ネットワークエラー or 紐づけ情報がない')
     loading.value = false
+
+    openModal(0)
 
 }
 
@@ -114,21 +112,7 @@ onMounted(() => {
     }
 })
 
-const connectMember = async (data) => {
-    modalFlag.value = false
-    loading.value = true
 
-    const { data: res, error, pending } = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${data.usrmail}&password=${data.password}&id_token=${token.value}`)
-
-    loading.value = pending.value
-
-
-    // テスト用
-    console.log(res.value)
-    console.log(error.value)
-    response.value = res.value
-    err.value = error.value
-}
 
 const addPoint = async () => {
     loading.value = true
@@ -141,19 +125,19 @@ const addPoint = async () => {
 
                 if (!error.value) {
                     point.value = data.totalPoints
-                    message.value = 'ポイントが加算されました'
+                    setFlashMessage('ポイントが加算されました')
                     loading.value = false
                     return
                 }
                 loading.value = false
-                message.value = '通信エラーが発生しました'
+                setFlashMessage('通信エラーが発生しました')
                 return
             }
-            message.value = 'QRコードの形式が違います'
+            setFlashMessage('QRコードの形式が違います')
             loading.value = false
         }).catch((err) => {
             err.value = err
-            message.value = 'QRコードが正常に読み込まれませんでした'
+            setFlashMessage('QRコードが正常に読み込まれませんでした')
             loading.value = false
         });
 }

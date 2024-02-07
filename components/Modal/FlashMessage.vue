@@ -1,9 +1,9 @@
 <template>
     <Teleport to="#app">
         <Transition name="fade">
-            <div class="modal-container">
+            <div v-if="flashMessageVisible" class="modal-container">
                 <div class="modal-content">
-                    <slot></slot>
+                    {{ flashMessage }}
                 </div>
             </div>
         </Transition>
@@ -12,17 +12,7 @@
 
 <script setup>
 
-const emits = defineEmits(['close'])
-
-const close = () => {
-    emits('close', true)
-}
-
-onMounted(() => {
-    setTimeout(() => {
-        close()
-    }, 2000)
-})
+const { flashMessage, flashMessageVisible } = useFlashMessage()
 
 </script>
 
@@ -33,7 +23,7 @@ onMounted(() => {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1001;
+    z-index: 2001;
 
     .modal-content {
         position: absolute;

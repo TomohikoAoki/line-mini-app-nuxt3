@@ -40,6 +40,9 @@
 </template>
 
 <script setup>
+const loading = useState('loading')
+const { setUserPoint } = useUser()
+
 const formData = ref({
     usrmail: '',
     password: '',
@@ -60,11 +63,6 @@ const messageNumber = ref({
     password: null
 })
 
-const emits = defineEmits(['formData'])
-
-const connect = () => {
-    emits('formData', formData.value)
-}
 
 const fieldValidation = (field) => {
     // validationの形式
@@ -84,6 +82,36 @@ const fieldValidation = (field) => {
     validation.value[field] = rgxObj.test(formData.value[field])
 
     messageNumber.value[field] = validation.value[field] ? null : 1
+}
+
+
+const connect = async (data) => {
+    loading.value = true
+
+    const { data: res, error, pending } = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${data.usrmail}&password=${data.password}&id_token=${token.value}`)
+
+    loading.value = pending.value
+
+    if (!error.value) {
+        // 返ってきたポイントとユーザーIDとかあればuserStateに格納
+        // 紐づけ完了のメッセージを表示
+        // モーダルを閉じる
+        setUserPoint(res.value.point)
+
+        return
+    }
+
+    // 通信エラー or 紐づけができなかった場合
+    // エラーメッセージを表示
+    // モーダルを閉じる
+
+
+
+    // テスト用
+    console.log(res.value)
+    console.log(error.value)
+    response.value = res.value
+    err.value = error.value
 }
 </script>
 
