@@ -1,9 +1,9 @@
 <template>
     <Teleport to="#app">
         <Transition name="fade">
-            <div v-if="flashMessageVisible" class="modal-container">
+            <div v-if="flashMessage.visible" class="modal-container">
                 <div class="modal-content">
-                    {{ flashMessage }}
+                    {{ flashMessage.message }}
                 </div>
             </div>
         </Transition>
@@ -12,7 +12,7 @@
 
 <script setup>
 
-const { flashMessage, flashMessageVisible } = useFlashMessage()
+const { flashMessage } = useFlashMessage()
 
 </script>
 

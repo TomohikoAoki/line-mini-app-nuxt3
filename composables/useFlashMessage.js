@@ -1,16 +1,17 @@
 export const useFlashMessage = () => {
-    const flashMessage = ref('')
-    const flashMessageVisible = ref(false)
+    const flashMessage = useState("flash-message", () => {
+        return { visible: false, message: "", }
+    });
 
     const setFlashMessage = (message) => {
-        flashMessage.value = message;
-        flashMessageVisible.value = true;
+        flashMessage.value.message = message;
+        flashMessage.value.visible = true;
 
         setTimeout(() => {
-            flashMessage.value = '';
-            flashMessageVisible.value = false;
+            flashMessage.value.message = '';
+            flashMessage.value.visible = false;
         }, 3000);
     };
 
-    return { flashMessage, flashMessageVisible, setFlashMessage };
+    return { flashMessage, setFlashMessage };
 }
