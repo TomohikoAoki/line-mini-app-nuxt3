@@ -22,6 +22,7 @@ $baseColor : #c3c1c5;
 
 #app {
   position: relative;
+  width: 100%;
 
   .footer {
     color: $baseColor;

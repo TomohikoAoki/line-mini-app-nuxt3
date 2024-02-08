@@ -18,6 +18,6 @@ export default defineNuxtConfig({
       liffId: '',
       channelSecret: '',
       redirectUri: '',
-    }
+    },
   }
 })

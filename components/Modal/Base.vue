@@ -18,11 +18,12 @@
     </Transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
     disableBodyScroll,
     clearAllBodyScrollLocks
 } from 'body-scroll-lock'
+
 
 const { isVisible, closeModal } = useModal()
 
@@ -41,7 +42,7 @@ const modalConmopents = [
 // openModal()でindexを受け取り、modalTyle()でmodalを切り替える
 // 0: ConnectConfirm
 // 1: UsePoint
-const modalType = (index) => {
+const modalType = (index: number) => {
     return modalConmopents[index]
 }
 
@@ -75,6 +76,7 @@ watch(isVisible.value, (newVal) => {
     left: 0;
     margin: 0;
     background-color: rgba(56, 50, 61, 0.8);
+    box-sizing: border-box;
 
     .modal-content {
         padding: 2em 1em;
