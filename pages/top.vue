@@ -57,13 +57,11 @@
 </template>
 
 <script setup>
-/**
- * @description ライブラリのインポート
- */
+
 const { $liff } = useNuxtApp()
 const { startLoading, endLoading } = useLoading()
 const firstContacted = useState('firstContact')
-const { userState, getUserToken, getUserPoint } = useUser()
+const { getUserToken, getUserPoint, setUserPoint } = useUser()
 const { openModal } = useModal()
 const { setFlashMessage } = useFlashMessage()
 
@@ -103,7 +101,7 @@ const addPoint = async () => {
                 const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/add/${result.value}`)
 
                 if (!error.value) {
-                    userState.value.point = data.totalPoints
+                    setUserPoint(data.totalPoints)
                     setFlashMessage('ポイントが加算されました')
                     endLoading()
                     return
@@ -139,7 +137,7 @@ async function connectMemberByLineToken() {
     if (!error.value) {
         response.value = data
         setFlashMessage('会員情報との紐づけができました。')
-        userState.value.point = 100
+        setUserPoint(1000)
         endLoading()
 
         return

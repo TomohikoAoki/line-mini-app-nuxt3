@@ -129,8 +129,6 @@ const fieldValidation = (field) => {
 const connect = async () => {
     startLoading()
     // call api
-    // formの値を使用
-    // ユーザーpointとIDを取得
     const { data: res, error } = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.value.usrmail}&password=${formData.value.password}&id_token=${getUserToken()}`)
 
     if (!error.value) {

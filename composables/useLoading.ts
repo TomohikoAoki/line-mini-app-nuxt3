@@ -1,5 +1,5 @@
 export const useLoading = () => {
-    const isLoading = useState("loading", () => false);
+    const isLoading = useState<boolean>("loading", () => false);
     const startLoading = () => {
         isLoading.value = true;
     };

@@ -16,7 +16,7 @@
 const router = useRouter()
 const { startLoading, endLoading } = useLoading()
 
-const { userState } = useUser()
+const { setUserToken, setUserName } = useUser()
 
 startLoading()
 
@@ -27,10 +27,11 @@ onMounted(() => {
         .then(async () => {
             const sdkVersion = await $liff.getVersion();
 
-            userState.value.token = await $liff.getIDToken();
+            const token = await $liff.getIDToken();
+            setUserToken(token)
 
             const profileData = await $liff.getDecodedIDToken()
-            userState.value.name = profileData.name
+            setUserName(profileData.name)
 
             endLoading()
 
