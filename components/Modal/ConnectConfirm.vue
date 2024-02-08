@@ -47,27 +47,56 @@ const { closeModal } = useModal()
 const { getUserToken } = useUser()
 
 // formとvalidation関係
+/**
+ * @description formの値
+ * @type {Object}
+ * @property {string} usrmail - メールアドレス
+ * @property {string} password - パスワード
+ */
 const formData = ref({
     usrmail: '',
     password: '',
 })
-
+/**
+ * @description バリデーションの結果
+ * @type {Object}
+ * @property {boolean} usrmail - メールアドレスのバリデーションの結果
+ * @property {boolean} password - パスワードのバリデーションの結果
+ */
 const validation = ref({
     usrmail: null,
     password: null,
 })
 
+/**
+ * @description バリデーションのエラーメッセージ
+ * @type {Object}
+ * @property {Array} usrmail - メールアドレスのバリデーションのエラーメッセージ
+ * @property {Array} password - パスワードのバリデーションのエラーメッセージ
+ */
 const validationMessage = ref({
     usrmail: ['必ず入力してください。', 'メールアドレスの形式が違います'],
     password: ['必ず入力してください。', '半角英数字で入力してください。']
 })
 
+/**
+ * @description validationMessageに格納しているエラーメッセージから、表示するエラーメッセージのindexを格納
+ * @type {Object}
+ * @property {number} usrmail - メールアドレスのバリデーションのエラーメッセージナンバー
+ * @property {number} password - パスワードのバリデーションのエラーメッセージナンバー
+ */
 const messageNumber = ref({
     usrmail: null,
     password: null
 })
 
-
+/**
+ * @description フィールドのバリデーション
+ * @param {string} field - バリデーションを行うフィールド
+ * @example fieldValidation('usrmail')
+ * @todo バリデーションの結果によって、バリデーションの結果とエラの場合は表示するエラーメッセージナンバーを格納
+ * 
+ */
 const fieldValidation = (field) => {
     // validationの形式
     const rgx = {
@@ -88,10 +117,20 @@ const fieldValidation = (field) => {
     messageNumber.value[field] = validation.value[field] ? null : 1
 }
 
-// submit handler
+/**
+ * @function connect
+ * @description 会員情報との紐づけ/submit handler
+ * @returns {void}
+ * @see　{formData} formの値を使用
+ * @todo メールアドレスとパスワード、LineTokenを使ってapiを叩いて、ユーザーのポイントとIDを取得
+ * @todo 紐づけが完了した場合、userStateにポイントとユーザーIDを格納: ポイントが加算されましたを表示
+ * @todo 紐づけができなかった場合、エラーメッセージを表示: ネットワークエラー or 紐づけ情報がない
+ */
 const connect = async () => {
     startLoading()
-
+    // call api
+    // formの値を使用
+    // ユーザーpointとIDを取得
     const { data: res, error } = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.value.usrmail}&password=${formData.value.password}&id_token=${getUserToken()}`)
 
     if (!error.value) {

@@ -57,7 +57,9 @@
 </template>
 
 <script setup>
-
+/**
+ * @description ライブラリのインポート
+ */
 const { $liff } = useNuxtApp()
 const { startLoading, endLoading } = useLoading()
 const firstContacted = useState('firstContact')
@@ -72,6 +74,9 @@ const test = ref(null)
 const err = ref(null)
 const query = ref(null)
 
+/**
+ * @doto 初回アクセス時にconnectMemberByLineToken()でLINEIDが登録されているかどうかを確認: 未登録の場合、会員連携モーダルを表示
+ */
 onMounted(() => {
     if (!firstContacted.value) {
         connectMemberByLineToken()
@@ -79,19 +84,22 @@ onMounted(() => {
     }
 })
 
-// ポイントを加算する
-// 1. QRコードをスキャン
-// 2. QRコードの値をAPIに送信
-// 3. 加算されたポイントを取得: userStateに格納
-// 4. フラッシュメッセージを表示: ポイントが加算されました
-// 5. エラーが発生した場合、フラッシュメッセージを表示: 通信エラーが発生しました or QRコードの形式が違います
+
+/**
+ * @description ポイントを加算する
+ * @returns {void}
+ * @todo QRコードをスキャンし、加算されたポイントを取得: userStateに格納
+ * @todo フラッシュメッセージを表示: ポイントが加算されました
+ * @todo エラーが発生した場合、フラッシュメッセージを表示: 通信エラーが発生しました or QRコードの形式が違います
+ */
 const addPoint = async () => {
     startLoading()
     $liff.scanCodeV2()
         .then(async (result) => {
             if (result.value !== null) {
-                // add point api
                 console.log(result.value)
+                // call api
+                // QRコードから取得した情報を使用
                 const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/add/${result.value}`)
 
                 if (!error.value) {
@@ -113,12 +121,19 @@ const addPoint = async () => {
         });
 }
 
-// 初回アクセス時に、
-// 1. LineIDが登録されているかどうか: 未登録の場合、会員連携モーダルを表示
-// 2. LineIDが登録されている場合、会員情報を取得: ポイントを取得: userStateに格納
-// 3. 会員情報との紐づけができた場合、フラッシュメッセージを表示: 会員情報との紐づけができました
+
+/**
+ * @description LineIDが登録されているかどうか確認: 未登録の場合、会員連携モーダルを表示
+ * @see {getUserToken} LineTokenを使用
+ * @returns {void}
+ * @todo LineTokenを使用してapiを叩く
+ * @todo LineIDが登録されている場合、会員情報を取得: ポイントを取得: userStateに格納: フラッシュメッセージを表示: 会員情報との紐づけができました
+ * @todo エラーが発生した場合、フラッシュメッセージを表示: ネットワークエラー or 紐づけ情報がない: 会員連携モーダルを表示
+ */
 async function connectMemberByLineToken() {
     startLoading()
+    // call api
+    // line tokenを使用
     const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
 
     if (!error.value) {

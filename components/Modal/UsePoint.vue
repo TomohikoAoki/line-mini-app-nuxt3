@@ -51,18 +51,45 @@ const { startLoading, endLoading } = useLoading()
 
 
 // formとvalidation関係
+/**
+ * @description formの値
+ * @type {Object}
+ * @property {number} point - 使用ポイント
+ */
 const formData = ref({
     point: null
 })
+/**
+ * @description バリデーションの結果
+ * @type {Object}
+ * @property {boolean} point - 使用ポイントのバリデーションの結果
+ */
 const validation = ref({
     point: null,
 })
+/**
+ * @description バリデーションのエラーメッセージ
+ * @type {Object}
+ * @property {Array} point - 使用ポイントのバリデーションのエラーメッセージ
+ */
 const validationMessage = ref({
     point: ['必ず入力してください。', '半角数字で整数を入力してください。', '利用できるポイントを超えています'],
 })
+/**
+ * @description validationMessageに格納しているエラーメッセージから、表示するエラーメッセージのindexを格納
+ * @type {Object}
+ * @property {number} point - 表示するエラーメッセージナンバー
+ */
 const messageNumber = ref({
     point: null,
 })
+/**
+ * @description フィールドのバリデーション
+ * @param {string} field - バリデーションを行うフィールド
+ * @example fieldValidation('usrmail')
+ * @todo バリデーションは数字のみか、空ではないか、使用ポイントがtotalPointを超えていないかを確認
+ * @todo バリデーションの結果によって、バリデーションの結果とエラーの場合は表示するエラーメッセージナンバーを格納
+ */
 const fieldValidation = (field) => {
     // validationの形式
     const rgx = {
@@ -97,7 +124,13 @@ const correction = () => {
     confirmFlag.value = false
 }
 
-const usePoint = async (point) => {
+/**
+ * @description ポイントを使用する
+ * @returns {void}
+ * @example sumbit handler
+ * @todo apiを叩いて、ユーザーの使用ポイントを送信
+ */
+const usePoint = async () => {
     //     
     //     console.log(point, 'ポイントを使ったつもり')
     //     $liff.scanCodeV2()
