@@ -85,6 +85,7 @@ watch(isVisible.value, (newVal) => {
         min-height: 80%;
         background-color: #fff;
         border-radius: 10px;
+        box-sizing: border-box;
     }
 }
 

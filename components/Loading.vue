@@ -17,7 +17,6 @@ const { isLoading } = useLoading()
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 50px 0 150px 0;
   position: fixed;
   height: 100%;
   top: 0;
