@@ -8,12 +8,12 @@
       <p class="footer-address">〒112-0001 東京都文京区白山2-30-2 平林ビル1F</p>
       <p class="footer-tel">03-3868-0349</p>
     </footer>
+    <LazyModalBase></LazyModalBase>
+    <LazyModalFlashMessage></LazyModalFlashMessage>
   </div>
 </template>
 
 <script setup>
-
-useState('loading', () => false)
 
 </script>
 

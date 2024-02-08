@@ -45,8 +45,7 @@
                 <li class="link__list_item"><nuxt-link to="/privacy" class="item_container">プライバシーポリシー</nuxt-link></li>
             </ul>
         </nav>
-        <ModalBase></ModalBase>
-        <ModalFlashMessage></ModalFlashMessage>
+
         <div class="test">
             <p><span class="labeel">response</span><br> {{ response }}</p>
             <p><span class="labeel">err</span><br>{{ err }}</p>
@@ -60,10 +59,9 @@
 <script setup>
 
 const { $liff } = useNuxtApp()
-const loading = useState('loading')
+const { startLoading, endLoading } = useLoading()
 const firstContacted = useState('firstContact')
 const { userState, getUserToken, getUserPoint } = useUser()
-
 const { openModal } = useModal()
 const { setFlashMessage } = useFlashMessage()
 
@@ -74,31 +72,26 @@ const test = ref(null)
 const err = ref(null)
 const query = ref(null)
 
-
-const closeMessage = () => {
-    message.value = null
-}
-
-
-// LineIDが登録されている場合、
-// point取得
-const connectMemberByLineToken = async () => {
-    loading.value = true
+// 初回アクセス時に、
+// 1. LineIDが登録されているかどうか: 未登録の場合、会員連携モーダルを表示
+// 2. LineIDが登録されている場合、会員情報を取得: ポイントを取得: userStateに格納
+// 3. 会員情報との紐づけができた場合、フラッシュメッセージを表示: 会員情報との紐づけができました
+async function connectMemberByLineToken() {
+    startLoading()
     const { data, error, pending } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
-    loading.value = pending.value
 
     if (!error.value) {
         response.value = data
         setFlashMessage('会員情報との紐づけができました。')
         userState.value.point = 100
-        loading.value = false
+        endLoading()
 
         return
     }
 
     err.value = error.value
     setFlashMessage('ネットワークエラー or 紐づけ情報がない')
-    loading.value = false
+    endLoading()
 
     openModal(0)
 
@@ -111,10 +104,14 @@ onMounted(() => {
     }
 })
 
-
-
+// ポイントを加算する
+// 1. QRコードをスキャン
+// 2. QRコードの値をAPIに送信
+// 3. 加算されたポイントを取得: userStateに格納
+// 4. フラッシュメッセージを表示: ポイントが加算されました
+// 5. エラーが発生した場合、フラッシュメッセージを表示: 通信エラーが発生しました or QRコードの形式が違います
 const addPoint = async () => {
-    loading.value = true
+    startLoading()
     $liff.scanCodeV2()
         .then(async (result) => {
             if (result.value !== null) {
@@ -123,9 +120,9 @@ const addPoint = async () => {
                 const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/add/${result.value}`)
 
                 if (!error.value) {
-                    point.value = data.totalPoints
+                    userState.value.point = data.totalPoints
                     setFlashMessage('ポイントが加算されました')
-                    loading.value = false
+                    endLoading()
                     return
                 }
                 loading.value = false
@@ -133,43 +130,43 @@ const addPoint = async () => {
                 return
             }
             setFlashMessage('QRコードの形式が違います')
-            loading.value = false
+            endLoading()
         }).catch((err) => {
             err.value = err
             setFlashMessage('QRコードが正常に読み込まれませんでした')
-            loading.value = false
+            endLoading()
         });
 }
 
-const usePoint = async (point) => {
-    usePointModalFlag.value = false
-    console.log(point, 'ポイントを使ったつもり')
-    // $liff.scanCodeV2()
-    //     .then( async (result) => {
-    //         if (result.value != null) {
-    //             var val = JSON.parse(result.value);
-    //             // 【code_id】修正予定
-    //             const ekanteisId = val['code_id'];
+// const usePoint = async (point) => {
+//     usePointModalFlag.value = false
+//     console.log(point, 'ポイントを使ったつもり')
+//     $liff.scanCodeV2()
+//         .then( async (result) => {
+//             if (result.value != null) {
+//                 var val = JSON.parse(result.value);
+//                 // 【code_id】修正予定
+//                 const ekanteisId = val['code_id'];
 
-    //             // totalpoints = axiosGet('use/'+ ekanteisId + '/' + point);
-    //             const {data,error} = await useFetch(`https://sysf.heartful.work/epoints/use/100/${point}`)
+//                 // totalpoints = axiosGet('use/'+ ekanteisId + '/' + point);
+//                 const {data,error} = await useFetch(`https://sysf.heartful.work/epoints/use/100/${point}`)
 
-    //             if (!error.value) {
-    //                 point.value = data.totalPoints
-    //                 message.value = 'ポイントが使用しました。'
-    //                 loading.value = false
-    //                 return
-    //             }
+//                 if (!error.value) {
+//                     point.value = data.totalPoints
+//                     message.value = 'ポイントが使用しました。'
+//                     loading.value = false
+//                     return
+//                 }
 
-    //             message.value = '通信でエラーが発生。'
-    //         }
-    //         message.value = 'QRコードの形式が違います'
-    //     })
-    //     .catch((error) => {
-    //         message.value = 'QRコードが正常に読み込まれませんでした'
-    //         console.log(error)
-    //     });
-}
+//                 message.value = '通信でエラーが発生。'
+//             }
+//             message.value = 'QRコードの形式が違います'
+//         })
+//         .catch((error) => {
+//             message.value = 'QRコードが正常に読み込まれませんでした'
+//             console.log(error)
+//         });
+// }
 
 </script>
 

@@ -43,7 +43,9 @@
 </template>
 
 <script setup>
+const { getUserPoint } = useUser()
 
+// formとvalidation関係
 const formData = ref({
     point: null
 })
@@ -56,24 +58,6 @@ const validationMessage = ref({
 const messageNumber = ref({
     point: null,
 })
-const confirmFlag = ref(false)
-
-const { getUserPoint } = useUser()
-
-const emits = defineEmits(['usePoint', 'close'])
-
-const usePoint = () => {
-    emits('usePoint', formData.value.point)
-}
-
-const confirm = () => {
-    confirmFlag.value = true
-}
-
-const correction = () => {
-    confirmFlag.value = false
-}
-
 const fieldValidation = (field) => {
     // validationの形式
     const rgx = {
@@ -98,6 +82,25 @@ const fieldValidation = (field) => {
 
     messageNumber.value[field] = validation.value[field] ? null : 1
 }
+
+// 確認画面切り替え関係
+const confirmFlag = ref(false)
+const confirm = () => {
+    confirmFlag.value = true
+}
+const correction = () => {
+    confirmFlag.value = false
+}
+
+// form submit handler
+// pointの使用
+const usePoint = () => {
+    // emits('usePoint', formData.value.point)
+}
+
+
+
+
 
 
 </script>

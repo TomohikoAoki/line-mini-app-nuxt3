@@ -1,6 +1,6 @@
 <template lang="html">
   <teleport to="#app">
-    <div class="loader-background" v-if="loading">
+    <div v-if="isLoading" class="loader-background">
       <div class="loader">
         <img src="~assets/images/spinner_dark.svg">
       </div>
@@ -9,12 +9,12 @@
 </template>
 
 <script setup>
-const loading = useState('loading')
+const { isLoading } = useLoading()
 </script>
 
 <style scoped>
 .loader-background {
-  z-index: 1001;
+  z-index: 2001;
   position: fixed;
   background: #0a0a0a;
   opacity: 0.4;

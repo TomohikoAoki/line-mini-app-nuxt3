@@ -1,23 +1,21 @@
 <template>
-    <teleport to="#app">
-        <Transition name="fade">
-            <div v-if="isVisible.visible" class="modal-container">
-                <div class="modal-content">
-                    <component :is="modalTyle(isVisible.number)" @emitData="emitData">
-                    </component>
-                    <button @click="close" class="close">
-                        <span class="close-icon">
-                            <SvgBase icon-name="icon-navi-add" viewBox="0 -960 960 960" iconColor="#504848;"
-                                iconTitle="モーダル閉じる">
-                                <SvgDataClose></SvgDataClose>
-                            </SvgBase>
-                        </span>
-                        <span class="close-text">CLOSE</span>
-                    </button>
-                </div>
+    <Transition name="fade">
+        <div v-if="isVisible.visible" class="modal-container">
+            <div class="modal-content">
+                <component :is="modalTyle(isVisible.number)">
+                </component>
+                <button @click="close" class="close">
+                    <span class="close-icon">
+                        <SvgBase icon-name="icon-navi-add" viewBox="0 -960 960 960" iconColor="#504848;"
+                            iconTitle="モーダル閉じる">
+                            <SvgDataClose></SvgDataClose>
+                        </SvgBase>
+                    </span>
+                    <span class="close-text">CLOSE</span>
+                </button>
             </div>
-        </Transition>
-    </teleport>
+        </div>
+    </Transition>
 </template>
 
 <script setup>
@@ -26,6 +24,9 @@ import {
     clearAllBodyScrollLocks
 } from 'body-scroll-lock'
 
+const { isVisible, closeModal } = useModal()
+
+// dinamic componentの為にimport
 // modal #0
 import ConnectConfirm from '@/components/Modal/ConnectConfirm.vue';
 // modal #1
@@ -36,34 +37,32 @@ const modalConmopents = [
     UsePoint
 ]
 
-const { isVisible, closeModal } = useModal()
-
 // modal componentの切り替え
+// openModal()でindexを受け取り、modalTyle()でmodalを切り替える
+// 0: ConnectConfirm
+// 1: UsePoint
 const modalTyle = (index) => {
     return modalConmopents[index]
 }
 
+// isVisibleでv-ifのコントロール
 // mountしたらbody scroll lockを付与
-watch(isVisible, (newVal) => {
-    if (newVal) {
-        nextTick(() => {
-            const confirmModal = document.querySelector(".modal-container")
-            disableBodyScroll(confirmModal)
-        })
-    } else {
-        clearAllBodyScrollLocks();
-    }
+// unmountしたらbody scroll lockを解除
+watch(isVisible.value, (newVal) => {
+    nextTick(() => {
+        if (newVal.visible) {
+            const modal = document.querySelector(".modal-container")
+            disableBodyScroll(modal)
+        } else {
+            clearAllBodyScrollLocks();
+        }
+    })
+
 })
 
-
-const emits = defineEmits(['emitData', 'close'])
-
-const emitData = (value) => {
-    emits('emitData', value)
-}
-
+// close event handler
+// isVisibleをfalseにして、modalを閉じる
 const close = () => {
-    clearAllBodyScrollLocks()
     closeModal()
 }
 

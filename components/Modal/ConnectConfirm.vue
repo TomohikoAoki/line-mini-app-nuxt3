@@ -40,9 +40,13 @@
 </template>
 
 <script setup>
-const loading = useState('loading')
+const { startLoading, endLoading } = useLoading()
 const { setUserPoint } = useUser()
+const { setFlashMessage } = useFlashMessage()
+const { closeModal } = useModal()
+const { getUserToken } = useUser()
 
+// formとvalidation関係
 const formData = ref({
     usrmail: '',
     password: '',
@@ -84,34 +88,34 @@ const fieldValidation = (field) => {
     messageNumber.value[field] = validation.value[field] ? null : 1
 }
 
+// submit handler
+const connect = async () => {
+    startLoading()
 
-const connect = async (data) => {
-    loading.value = true
-
-    const { data: res, error, pending } = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${data.usrmail}&password=${data.password}&id_token=${token.value}`)
-
-    loading.value = pending.value
+    const { data: res, error } = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.value.usrmail}&password=${formData.value.password}&id_token=${getUserToken()}`)
 
     if (!error.value) {
         // 返ってきたポイントとユーザーIDとかあればuserStateに格納
         // 紐づけ完了のメッセージを表示
         // モーダルを閉じる
         setUserPoint(res.value.point)
-
+        setFlashMessage('会員情報との紐づけができました。')
+        endLoading()
         return
     }
 
     // 通信エラー or 紐づけができなかった場合
     // エラーメッセージを表示
     // モーダルを閉じる
+    setFlashMessage('ネットワークエラー or 紐づけ情報がない')
+    closeModal()
+    endLoading()
 
 
 
     // テスト用
-    console.log(res.value)
-    console.log(error.value)
-    response.value = res.value
-    err.value = error.value
+    console.log(res.value, "responseの値")
+    console.log(error.value, "errorの値")
 }
 </script>
 

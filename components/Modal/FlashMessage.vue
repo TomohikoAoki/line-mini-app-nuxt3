@@ -1,18 +1,24 @@
 <template>
-    <Teleport to="#app">
-        <Transition name="fade">
-            <div v-if="flashMessage.visible" class="modal-container">
-                <div class="modal-content">
-                    {{ flashMessage.message }}
-                </div>
+    <Transition name="fade">
+        <div v-if="visible" class="modal-container">
+            <div class="modal-content">
+                {{ message }}
             </div>
-        </Transition>
-    </Teleport>
+        </div>
+    </Transition>
 </template>
 
 <script setup>
 
 const { flashMessage } = useFlashMessage()
+
+const message = computed(() => {
+    return flashMessage.value.message
+})
+
+const visible = computed(() => {
+    return flashMessage.value.visible
+})
 
 </script>
 

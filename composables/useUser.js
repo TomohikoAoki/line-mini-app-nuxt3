@@ -1,3 +1,5 @@
+// ユーザー情報を管理するためのカスタムフック
+
 export const useUser = () => {
     const userState = useState("use-user", () => {
         return { name: null, token: null, profileData: null, point: 0 }
@@ -19,5 +21,5 @@ export const useUser = () => {
     const getUserToken = () => userState.value.token
     const getUserPoint = () => userState.value.point
 
-    return { userState, getUserName, getUserToken, getUserPoint };
+    return { userState, getUserName, getUserToken, getUserPoint, setUserName, setUserToken, setUserPoint };
 }

@@ -14,16 +14,14 @@
 
 <script setup>
 const router = useRouter()
-const loading = useState('loading')
+const { startLoading, endLoading } = useLoading()
 
 const { userState } = useUser()
 
+startLoading()
 
 onMounted(() => {
     const { $liffInit, $liff } = useNuxtApp()
-
-    loading.value = true
-
 
     $liffInit
         .then(async () => {
@@ -34,13 +32,13 @@ onMounted(() => {
             const profileData = await $liff.getDecodedIDToken()
             userState.value.name = profileData.name
 
-            loading.value = false
+            endLoading()
 
             router.push('/top')
         })
         .catch((error) => {
             console.error(error);
-            loading.value = false
+            endLoading()
             // this.showButton = true;
         });
 
