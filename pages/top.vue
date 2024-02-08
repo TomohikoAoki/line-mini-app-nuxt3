@@ -72,31 +72,6 @@ const test = ref(null)
 const err = ref(null)
 const query = ref(null)
 
-// 初回アクセス時に、
-// 1. LineIDが登録されているかどうか: 未登録の場合、会員連携モーダルを表示
-// 2. LineIDが登録されている場合、会員情報を取得: ポイントを取得: userStateに格納
-// 3. 会員情報との紐づけができた場合、フラッシュメッセージを表示: 会員情報との紐づけができました
-async function connectMemberByLineToken() {
-    startLoading()
-    const { data, error, pending } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
-
-    if (!error.value) {
-        response.value = data
-        setFlashMessage('会員情報との紐づけができました。')
-        userState.value.point = 100
-        endLoading()
-
-        return
-    }
-
-    err.value = error.value
-    setFlashMessage('ネットワークエラー or 紐づけ情報がない')
-    endLoading()
-
-    openModal(0)
-
-}
-
 onMounted(() => {
     if (!firstContacted.value) {
         connectMemberByLineToken()
@@ -138,35 +113,30 @@ const addPoint = async () => {
         });
 }
 
-// const usePoint = async (point) => {
-//     usePointModalFlag.value = false
-//     console.log(point, 'ポイントを使ったつもり')
-//     $liff.scanCodeV2()
-//         .then( async (result) => {
-//             if (result.value != null) {
-//                 var val = JSON.parse(result.value);
-//                 // 【code_id】修正予定
-//                 const ekanteisId = val['code_id'];
+// 初回アクセス時に、
+// 1. LineIDが登録されているかどうか: 未登録の場合、会員連携モーダルを表示
+// 2. LineIDが登録されている場合、会員情報を取得: ポイントを取得: userStateに格納
+// 3. 会員情報との紐づけができた場合、フラッシュメッセージを表示: 会員情報との紐づけができました
+async function connectMemberByLineToken() {
+    startLoading()
+    const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
 
-//                 // totalpoints = axiosGet('use/'+ ekanteisId + '/' + point);
-//                 const {data,error} = await useFetch(`https://sysf.heartful.work/epoints/use/100/${point}`)
+    if (!error.value) {
+        response.value = data
+        setFlashMessage('会員情報との紐づけができました。')
+        userState.value.point = 100
+        endLoading()
 
-//                 if (!error.value) {
-//                     point.value = data.totalPoints
-//                     message.value = 'ポイントが使用しました。'
-//                     loading.value = false
-//                     return
-//                 }
+        return
+    }
 
-//                 message.value = '通信でエラーが発生。'
-//             }
-//             message.value = 'QRコードの形式が違います'
-//         })
-//         .catch((error) => {
-//             message.value = 'QRコードが正常に読み込まれませんでした'
-//             console.log(error)
-//         });
-// }
+    err.value = error.value
+    setFlashMessage('ネットワークエラー or 紐づけ情報がない')
+    endLoading()
+
+    openModal(0)
+
+}
 
 </script>
 

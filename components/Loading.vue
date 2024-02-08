@@ -13,7 +13,6 @@ const { isLoading } = useLoading()
 <style scoped>
 .loader-background {
   z-index: 3001;
-  opacity: 0.4;
   display: flex;
   justify-content: center;
   align-items: center;

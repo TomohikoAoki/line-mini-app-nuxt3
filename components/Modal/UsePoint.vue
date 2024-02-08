@@ -43,7 +43,12 @@
 </template>
 
 <script setup>
+const { $liff } = useNuxtApp()
 const { getUserPoint } = useUser()
+const { setFlashMessage } = useFlashMessage()
+const { userState } = useUser()
+const { startLoading, endLoading } = useLoading()
+
 
 // formとvalidation関係
 const formData = ref({
@@ -92,10 +97,34 @@ const correction = () => {
     confirmFlag.value = false
 }
 
-// form submit handler
-// pointの使用
-const usePoint = () => {
-    // emits('usePoint', formData.value.point)
+const usePoint = async (point) => {
+    //     
+    //     console.log(point, 'ポイントを使ったつもり')
+    //     $liff.scanCodeV2()
+    //         .then( async (result) => {
+    //             if (result.value != null) {
+    //                 var val = JSON.parse(result.value);
+    //                 // 【code_id】修正予定
+    //                 const ekanteisId = val['code_id'];
+
+    //                 // totalpoints = axiosGet('use/'+ ekanteisId + '/' + point);
+    //                 const {data,error} = await useFetch(`https://sysf.heartful.work/epoints/use/100/${point}`)
+
+    //                 if (!error.value) {
+    //                     point.value = data.totalPoints
+    //                     message.value = 'ポイントが使用しました。'
+    //                     loading.value = false
+    //                     return
+    //                 }
+
+    //                 message.value = '通信でエラーが発生。'
+    //             }
+    //             message.value = 'QRコードの形式が違います'
+    //         })
+    //         .catch((error) => {
+    //             message.value = 'QRコードが正常に読み込まれませんでした'
+    //             console.log(error)
+    //         });
 }
 
 

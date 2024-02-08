@@ -2,9 +2,9 @@
     <Transition name="fade">
         <div v-if="isVisible.visible" class="modal-container">
             <div class="modal-content">
-                <component :is="modalTyle(isVisible.number)">
+                <component :is="modalType(isVisible.number)">
                 </component>
-                <button @click="close" class="close">
+                <button @click="closeModal" class="close">
                     <span class="close-icon">
                         <SvgBase icon-name="icon-navi-add" viewBox="0 -960 960 960" iconColor="#504848;"
                             iconTitle="モーダル閉じる">
@@ -41,7 +41,7 @@ const modalConmopents = [
 // openModal()でindexを受け取り、modalTyle()でmodalを切り替える
 // 0: ConnectConfirm
 // 1: UsePoint
-const modalTyle = (index) => {
+const modalType = (index) => {
     return modalConmopents[index]
 }
 
@@ -60,11 +60,6 @@ watch(isVisible.value, (newVal) => {
 
 })
 
-// close event handler
-// isVisibleをfalseにして、modalを閉じる
-const close = () => {
-    closeModal()
-}
 
 </script>
 
