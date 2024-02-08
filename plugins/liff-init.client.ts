@@ -5,7 +5,7 @@ import liff from '@line/liff';
 export default defineNuxtPlugin(nuxtApp => {
     const runtimeConfig = useRuntimeConfig()
 
-    const initResult = liff.init({ liffId: '2001061637-2gNwm9z5', withLoginOnExternalBrowser: true })
+    const initResult: any = liff.init({ liffId: '2001061637-2gNwm9z5', withLoginOnExternalBrowser: true })
         .then(() => {
             console.log('liff.init() done');
         })

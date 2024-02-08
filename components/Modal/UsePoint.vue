@@ -14,7 +14,7 @@
                                 @blur="fieldValidation('point')"
                                 :class="{ valid: validation.point, invalid: validation.point === false }">
                             <div class="error"><span v-if="validation.point === false">{{
-                                validationMessage.point[messageNumber.point] }}</span>
+                                validationMessage.point[messageNumber.point!] }}</span>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const { $liff } = useNuxtApp()
 const { getUserPoint } = useUser()
 const { setFlashMessage } = useFlashMessage()
@@ -50,39 +50,37 @@ const { userState } = useUser()
 const { startLoading, endLoading } = useLoading()
 
 
+type FormData = {
+    [key: string]: number | null,
+}
+
 // formとvalidation関係
 /**
  * @description formの値
- * @type {Object}
  * @property {number} point - 使用ポイント
  */
-const formData = ref({
+const formData = ref<FormData>({
     point: null
 })
 /**
  * @description バリデーションの結果
- * @type {Object}
- * @property {boolean} point - 使用ポイントのバリデーションの結果
  */
-const validation = ref({
+const validation = ref<FormValidation>({
     point: null,
 })
 /**
  * @description バリデーションのエラーメッセージ
- * @type {Object}
- * @property {Array} point - 使用ポイントのバリデーションのエラーメッセージ
  */
-const validationMessage = ref({
+const validationMessage = ref<FormValidationMessage>({
     point: ['必ず入力してください。', '半角数字で整数を入力してください。', '利用できるポイントを超えています'],
 })
 /**
  * @description validationMessageに格納しているエラーメッセージから、表示するエラーメッセージのindexを格納
- * @type {Object}
- * @property {number} point - 表示するエラーメッセージナンバー
  */
-const messageNumber = ref({
+const messageNumber = ref<FormValidationMessageNumber>({
     point: null,
 })
+
 /**
  * @description フィールドのバリデーション
  * @param {string} field - バリデーションを行うフィールド
@@ -90,27 +88,26 @@ const messageNumber = ref({
  * @todo バリデーションは数字のみか、空ではないか、使用ポイントがtotalPointを超えていないかを確認
  * @todo バリデーションの結果によって、バリデーションの結果とエラーの場合は表示するエラーメッセージナンバーを格納
  */
-const fieldValidation = (field) => {
+const fieldValidation = (field: string) => {
     // validationの形式
-    const rgx = {
-        point: "\^[1-9][0-9]*$"
+    const rgx: FormValidationRegExp = {
+        point: new RegExp("\^[1-9][0-9]*$")
     }
 
     // 空の場合
-    if (formData.value[field] === '') {
+    if (formData.value[field] === null) {
         messageNumber.value[field] = 0
         validation.value[field] = false
         return
     }
     // 使用ポイントがtotalPointを超えた場合
-    if (getUserPoint() < formData.value[field]) {
+    if (getUserPoint() < formData.value[field]!) {
         messageNumber.value[field] = 2
         validation.value[field] = false
         return
     }
-    // mail 正規表現を合わない場合
-    const rgxObj = new RegExp(rgx[field])
-    validation.value[field] = rgxObj.test(formData.value[field])
+    // field 正規表現を合わない場合
+    validation.value[field] = rgx[field].test(formData.value[field]!.toString())
 
     messageNumber.value[field] = validation.value[field] ? null : 1
 }

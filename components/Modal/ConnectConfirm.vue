@@ -14,7 +14,7 @@
                     <input class="input-text" v-model="formData.usrmail" type="email" @blur="fieldValidation('usrmail')"
                         :class="{ valid: validation.usrmail, invalid: validation.usrmail === false }">
                     <div class="error"><span v-if="validation.usrmail === false">{{
-                        validationMessage.usrmail[messageNumber.usrmail] }}</span>
+                        validationMessage.usrmail[messageNumber.usrmail!] }}</span>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         :class="{ valid: validation.password, invalid: validation.password === false }">
                 </div>
                 <div class="error"><span v-if="validation.password === false">{{
-                    validationMessage.password[messageNumber.password] }}</span></div>
+                    validationMessage.password[messageNumber.password!] }}</span></div>
             </div>
             <button @click.prevent="connect" class="btn" :disabled="!validation.usrmail || !validation.password"
                 :class="{ disable: !validation.usrmail || !validation.password }">
@@ -39,53 +39,57 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { FormValidation, FormValidationMessageNumber, FormValidationRegExp } from '../../utils/useTypes';
+
+
 const { startLoading, endLoading } = useLoading()
 const { setUserPoint } = useUser()
 const { setFlashMessage } = useFlashMessage()
 const { closeModal } = useModal()
 const { getUserToken } = useUser()
 
+
+
+
+
+type formData = {
+    [key: string]: string,
+}
+
+type ResponseData = {
+    point: number
+}
+
+
 // formとvalidation関係
 /**
  * @description formの値
- * @type {Object}
- * @property {string} usrmail - メールアドレス
- * @property {string} password - パスワード
  */
-const formData = ref({
+const formData = ref<formData>({
     usrmail: '',
     password: '',
 })
 /**
  * @description バリデーションの結果
- * @type {Object}
- * @property {boolean} usrmail - メールアドレスのバリデーションの結果
- * @property {boolean} password - パスワードのバリデーションの結果
  */
-const validation = ref({
+const validation = ref<FormValidation>({
     usrmail: null,
     password: null,
 })
 
 /**
  * @description バリデーションのエラーメッセージ
- * @type {Object}
- * @property {Array} usrmail - メールアドレスのバリデーションのエラーメッセージ
- * @property {Array} password - パスワードのバリデーションのエラーメッセージ
  */
-const validationMessage = ref({
+const validationMessage = ref<FormValidationMessage>({
     usrmail: ['必ず入力してください。', 'メールアドレスの形式が違います'],
     password: ['必ず入力してください。', '半角英数字で入力してください。']
 })
 
 /**
  * @description validationMessageに格納しているエラーメッセージから、表示するエラーメッセージのindexを格納
- * @type {Object}
- * @property {number} usrmail - メールアドレスのバリデーションのエラーメッセージナンバー
- * @property {number} password - パスワードのバリデーションのエラーメッセージナンバー
  */
-const messageNumber = ref({
+const messageNumber = ref<FormValidationMessageNumber>({
     usrmail: null,
     password: null
 })
@@ -94,14 +98,14 @@ const messageNumber = ref({
  * @description フィールドのバリデーション
  * @param {string} field - バリデーションを行うフィールド
  * @example fieldValidation('usrmail')
- * @todo バリデーションの結果によって、バリデーションの結果とエラの場合は表示するエラーメッセージナンバーを格納
+ * @todo バリデーションの結果によって、バリデーションの結果とエラーの場合は表示するエラーメッセージナンバーを格納
  * 
  */
-const fieldValidation = (field) => {
+const fieldValidation = (field: string) => {
     // validationの形式
-    const rgx = {
-        usrmail: "\^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$",
-        password: "\^[0-9a-zA-Z]*$"
+    const rgx: FormValidationRegExp = {
+        usrmail: new RegExp("\^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"),
+        password: new RegExp("\^[0-9a-zA-Z]*$")
     }
 
     // 空の場合
@@ -110,9 +114,8 @@ const fieldValidation = (field) => {
         validation.value[field] = false
         return
     }
-    // mail 正規表現を合わない場合
-    const rgxObj = new RegExp(rgx[field])
-    validation.value[field] = rgxObj.test(formData.value[field])
+    // 正規表現に合わない場合
+    validation.value[field] = rgx[field].test(formData.value[field])
 
     messageNumber.value[field] = validation.value[field] ? null : 1
 }
@@ -122,6 +125,7 @@ const fieldValidation = (field) => {
  * @description 会員情報との紐づけ/submit handler
  * @returns {void}
  * @see　{formData} formの値を使用
+ * @see {getUserToken} ユーザーのLineTokenを取得
  * @todo メールアドレスとパスワード、LineTokenを使ってapiを叩いて、ユーザーのポイントとIDを取得
  * @todo 紐づけが完了した場合、userStateにポイントとユーザーIDを格納: ポイントが加算されましたを表示
  * @todo 紐づけができなかった場合、エラーメッセージを表示: ネットワークエラー or 紐づけ情報がない
@@ -129,13 +133,14 @@ const fieldValidation = (field) => {
 const connect = async () => {
     startLoading()
     // call api
-    const { data: res, error } = await useFetch(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.value.usrmail}&password=${formData.value.password}&id_token=${getUserToken()}`)
+    const { data, error } = await useFetch<ResponseData>(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.value.usrmail}&password=${formData.value.password}&id_token=${getUserToken()}`)
 
-    if (!error.value) {
+    if (!error.value && data !== null) {
         // 返ってきたポイントとユーザーIDとかあればuserStateに格納
         // 紐づけ完了のメッセージを表示
         // モーダルを閉じる
-        setUserPoint(res.value.point)
+        const point = data.value?.point ?? 0
+        setUserPoint(point)
         setFlashMessage('会員情報との紐づけができました。')
         endLoading()
         return
@@ -151,7 +156,7 @@ const connect = async () => {
 
 
     // テスト用
-    console.log(res.value, "responseの値")
+    console.log(data.value, "responseの値")
     console.log(error.value, "errorの値")
 }
 </script>

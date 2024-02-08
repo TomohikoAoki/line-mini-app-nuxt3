@@ -8,7 +8,7 @@
     </Transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 const { flashMessage } = useFlashMessage()
 

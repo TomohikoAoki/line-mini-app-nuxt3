@@ -45,14 +45,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-html,
-body {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
 .home {
     padding: 5rem 2rem;
     text-align: center;

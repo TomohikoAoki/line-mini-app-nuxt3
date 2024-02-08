@@ -20,4 +20,7 @@ export default defineNuxtConfig({
       redirectUri: '',
     }
   },
+  alias: {
+    "*": "types/*",
+  },
 })
