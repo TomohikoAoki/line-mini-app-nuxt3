@@ -52,8 +52,8 @@ const modalType = (index: number) => {
 watch(isVisible.value, (newVal) => {
     nextTick(() => {
         if (newVal.visible) {
-            const modal = document.querySelector(".modal-container")
-            disableBodyScroll(modal)
+            const modal: HTMLElement | null = document.querySelector(".modal-container")
+            disableBodyScroll(modal!)
         } else {
             clearAllBodyScrollLocks();
         }
