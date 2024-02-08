@@ -15,14 +15,12 @@
 <script setup>
 const router = useRouter()
 const { startLoading, endLoading } = useLoading()
-
 const { setUserToken, setUserName } = useUser()
+const { $liffInit, $liff } = useNuxtApp()
 
 startLoading()
 
 onMounted(() => {
-    const { $liffInit, $liff } = useNuxtApp()
-
     $liffInit
         .then(async () => {
             const sdkVersion = await $liff.getVersion();

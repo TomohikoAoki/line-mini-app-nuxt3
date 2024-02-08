@@ -1,6 +1,11 @@
-// フラッシュメッセージを表示するためのカスタムフック
-// setFlashMessage関数を使ってフラッシュメッセージを表示する
-// メッセージは2秒間表示される
+/**
+ * フラッシュメッセージを表示するためのカスタムフック
+ * @packageDocumentation
+ * @module useFlashMessage
+ * @category Composable
+ * @subcategory FlashMessage
+ * setFlashMessage: フラッシュメッセージを表示する: 2000msで非表示にする
+ */
 
 interface FlashMessage {
     visible: boolean;
@@ -9,7 +14,7 @@ interface FlashMessage {
 
 export const useFlashMessage = () => {
     const flashMessage = useState<FlashMessage>("flash-message", () => {
-        return { visible: false, message: "", }
+        return { visible: false, message: "" }
     });
 
     const setFlashMessage = (message: string) => {

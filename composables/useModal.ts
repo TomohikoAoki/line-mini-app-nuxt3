@@ -11,7 +11,6 @@ export const useModal = () => {
     const isVisible = useState<Modal>("use-modal", () => {
         return { visible: false, number: 0, }
     });
-    const modalNumber = []
     const openModal = (number: number) => {
         isVisible.value.number = number;
         isVisible.value.visible = true;
