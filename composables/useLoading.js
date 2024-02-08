@@ -1,5 +1,5 @@
 export const useLoading = () => {
-    const isLoading = ref(false);
+    const isLoading = useState("loading", () => false);
     const startLoading = () => {
         isLoading.value = true;
     };
