@@ -19,8 +19,5 @@ export default defineNuxtConfig({
       channelSecret: '',
       redirectUri: '',
     }
-  },
-  alias: {
-    "*": "types/*",
-  },
+  }
 })

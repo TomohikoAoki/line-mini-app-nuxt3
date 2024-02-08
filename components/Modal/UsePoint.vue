@@ -44,9 +44,8 @@
 
 <script setup lang="ts">
 const { $liff } = useNuxtApp()
-const { getUserPoint } = useUser()
+const { getUserPoint, setUserPoint } = useUser()
 const { setFlashMessage } = useFlashMessage()
-const { userState } = useUser()
 const { startLoading, endLoading } = useLoading()
 
 

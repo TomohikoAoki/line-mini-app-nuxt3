@@ -11,15 +11,15 @@ export const useUser = () => {
         return { name: null, token: null, point: 0 }
     });
 
-    const setUserToken = (token: string) => {
+    const setUserToken = (token: string | null) => {
         userState.value.token = token;
     }
 
-    const setUserName = (name: string) => {
+    const setUserName = (name: string | null) => {
         userState.value.name = name;
     }
 
-    const setUserPoint = (point: number) => {
+    const setUserPoint = (point: number | 0) => {
         userState.value.point = point;
     }
 

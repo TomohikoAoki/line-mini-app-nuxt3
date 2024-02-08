@@ -12,7 +12,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const router = useRouter()
 const { startLoading, endLoading } = useLoading()
 const { setUserToken, setUserName } = useUser()
@@ -23,19 +23,19 @@ startLoading()
 onMounted(() => {
     $liffInit
         .then(async () => {
-            const sdkVersion = await $liff.getVersion();
+            const sdkVersion = $liff.getVersion();
 
-            const token = await $liff.getIDToken();
+            const token = $liff.getIDToken();
             setUserToken(token)
 
-            const profileData = await $liff.getDecodedIDToken()
-            setUserName(profileData.name)
+            const profileData = $liff.getDecodedIDToken()
+            setUserName(profileData?.name?.toString() || null)
 
             endLoading()
 
             router.push('/top')
         })
-        .catch((error) => {
+        .catch((error: any) => {
             console.error(error);
             endLoading()
             // this.showButton = true;

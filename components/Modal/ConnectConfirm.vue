@@ -40,20 +40,13 @@
 </template>
 
 <script setup lang="ts">
-import type { FormValidation, FormValidationMessageNumber, FormValidationRegExp } from '../../utils/useTypes';
-
-
 const { startLoading, endLoading } = useLoading()
 const { setUserPoint } = useUser()
 const { setFlashMessage } = useFlashMessage()
 const { closeModal } = useModal()
 const { getUserToken } = useUser()
 
-
-
-
-
-type formData = {
+type FormData = {
     [key: string]: string,
 }
 
@@ -66,7 +59,7 @@ type ResponseData = {
 /**
  * @description formの値
  */
-const formData = ref<formData>({
+const formData = ref<FormData>({
     usrmail: '',
     password: '',
 })

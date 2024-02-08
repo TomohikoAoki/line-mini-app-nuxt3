@@ -56,7 +56,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 const { $liff } = useNuxtApp()
 const { startLoading, endLoading } = useLoading()
@@ -67,9 +67,9 @@ const { setFlashMessage } = useFlashMessage()
 
 
 //　テスト用
-const response = ref(null)
+const response: any = ref(null)
 const test = ref(null)
-const err = ref(null)
+const err: any = ref(null)
 const query = ref(null)
 
 /**
@@ -101,12 +101,12 @@ const addPoint = async () => {
                 const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/add/${result.value}`)
 
                 if (!error.value) {
-                    setUserPoint(data.totalPoints)
+                    setUserPoint(getUserPoint() + 1000)
                     setFlashMessage('ポイントが加算されました')
                     endLoading()
                     return
                 }
-                loading.value = false
+                endLoading()
                 setFlashMessage('通信エラーが発生しました')
                 return
             }
