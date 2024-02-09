@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-const { $liff } = useNuxtApp()
+// const { $liff } = useNuxtApp()
 const { getUserPoint, setUserPoint } = useUser()
 const { setFlashMessage } = useFlashMessage()
 const { startLoading, endLoading } = useLoading()

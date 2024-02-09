@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 
-const { $liff } = useNuxtApp()
+// const { $liff } = useNuxtApp()
 const { startLoading, endLoading } = useLoading()
 const firstContacted = useState('firstContact')
 const { getUserToken, getUserPoint, setUserPoint } = useUser()
@@ -90,32 +90,32 @@ onMounted(() => {
  * @todo エラーが発生した場合、フラッシュメッセージを表示: 通信エラーが発生しました or QRコードの形式が違います
  */
 const addPoint = async (): Promise<void> => {
-    startLoading()
-    $liff.scanCodeV2()
-        .then(async (result) => {
-            if (result.value !== null) {
-                console.log(result.value)
-                // call api
-                // QRコードから取得した情報を使用
-                const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/add/${result.value}`)
+    //     startLoading()
+    //     $liff.scanCodeV2()
+    //         .then(async (result) => {
+    //             if (result.value !== null) {
+    //                 console.log(result.value)
+    //                 // call api
+    //                 // QRコードから取得した情報を使用
+    //                 const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/add/${result.value}`)
 
-                if (!error.value) {
-                    setUserPoint(getUserPoint() + 1000)
-                    setFlashMessage('ポイントが加算されました')
-                    endLoading()
-                    return
-                }
-                endLoading()
-                setFlashMessage('通信エラーが発生しました')
-                return
-            }
-            setFlashMessage('QRコードの形式が違います')
-            endLoading()
-        }).catch((err) => {
-            err.value = err
-            setFlashMessage('QRコードが正常に読み込まれませんでした')
-            endLoading()
-        });
+    //                 if (!error.value) {
+    //                     setUserPoint(getUserPoint() + 1000)
+    //                     setFlashMessage('ポイントが加算されました')
+    //                     endLoading()
+    //                     return
+    //                 }
+    //                 endLoading()
+    //                 setFlashMessage('通信エラーが発生しました')
+    //                 return
+    //             }
+    //             setFlashMessage('QRコードの形式が違います')
+    //             endLoading()
+    //         }).catch((err) => {
+    //             err.value = err
+    //             setFlashMessage('QRコードが正常に読み込まれませんでした')
+    //             endLoading()
+    //         });
 }
 
 
