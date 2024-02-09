@@ -6,7 +6,7 @@
  * @todo: liffIdは開発用、審査用、本番用で異なるため、envで切り替える
  */
 
-// import liff from '@line/liff';
+import liff from '@line/liff';
 
 export default defineNuxtPlugin(nuxtApp => {
     const runtimeConfig = useRuntimeConfig()
