@@ -10,11 +10,10 @@ import liff from '@line/liff';
 
 export default defineNuxtPlugin(nuxtApp => {
     const runtimeConfig = useRuntimeConfig()
-    const id = runtimeConfig.public.liffId === "" ? process.env.LIFF_ID : runtimeConfig.public.liffId
 
     console.log('liffId:', id);
 
-    const initResult: Promise<string | void> = liff.init({ liffId: `${id}`, withLoginOnExternalBrowser: true })
+    const initResult: Promise<string | void> = liff.init({ liffId: `${runtimeConfig.public.liffId}`, withLoginOnExternalBrowser: true })
         .then(() => {
             console.log('liff.init() done');
         })

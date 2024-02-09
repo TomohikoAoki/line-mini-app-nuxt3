@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   css: ['@/assets/styles/destyle.css', '@/assets/styles/common.css'],
   runtimeConfig: {
     public: {
-      liffId: '',
+      liffId: process.env.NUXT_PUBLIC_LIFF_ID ?? '',
       channelSecret: '',
       redirectUri: '',
     },
