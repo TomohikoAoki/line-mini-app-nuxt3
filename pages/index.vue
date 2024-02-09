@@ -20,11 +20,14 @@ const { $liffInit, $liff } = useNuxtApp()
 
 startLoading()
 
+/**
+ * @description ログイン処理
+ * @todo プラグインでliffの初期化が終わったら、ユーザーのトークンを取得して、ユーザー名を取得して、トップページに遷移する
+ * @todo 初期化でエラーが返ってきたら、エラーをコンソールに出力, lineのログインボタンを表示する(予定)
+ */
 onMounted(() => {
     $liffInit
         .then(async () => {
-            const sdkVersion = $liff.getVersion();
-
             const token = $liff.getIDToken();
             setUserToken(token)
 

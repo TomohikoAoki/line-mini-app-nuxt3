@@ -32,7 +32,7 @@
                         <button @click.prevent="usePoint" class="btn2 connect">
                             送信
                         </button>
-                        <button @click.prevent="correction" class="btn2 correction">
+                        <button @click.prevent="confirm" class="btn2 correction">
                             修正
                         </button>
                     </div>
@@ -56,7 +56,6 @@ type FormData = {
 // formとvalidation関係
 /**
  * @description formの値
- * @property {number} point - 使用ポイント
  */
 const formData = ref<FormData>({
     point: null
@@ -82,12 +81,11 @@ const messageNumber = ref<FormValidationMessageNumber>({
 
 /**
  * @description フィールドのバリデーション
- * @param {string} field - バリデーションを行うフィールド
  * @example fieldValidation('usrmail')
  * @todo バリデーションは数字のみか、空ではないか、使用ポイントがtotalPointを超えていないかを確認
  * @todo バリデーションの結果によって、バリデーションの結果とエラーの場合は表示するエラーメッセージナンバーを格納
  */
-const fieldValidation = (field: string) => {
+const fieldValidation = (field: string): void => {
     // validationの形式
     const rgx: FormValidationRegExp = {
         point: new RegExp("\^[1-9][0-9]*$")
@@ -114,19 +112,15 @@ const fieldValidation = (field: string) => {
 // 確認画面切り替え関係
 const confirmFlag = ref(false)
 const confirm = () => {
-    confirmFlag.value = true
-}
-const correction = () => {
-    confirmFlag.value = false
+    confirmFlag.value = !confirmFlag.value
 }
 
 /**
  * @description ポイントを使用する
- * @returns {void}
  * @example sumbit handler
  * @todo apiを叩いて、ユーザーの使用ポイントを送信
  */
-const usePoint = async () => {
+const usePoint = async (): Promise<void> => {
     //     
     //     console.log(point, 'ポイントを使ったつもり')
     //     $liff.scanCodeV2()
@@ -155,11 +149,6 @@ const usePoint = async () => {
     //             console.log(error)
     //         });
 }
-
-
-
-
-
 
 </script>
 

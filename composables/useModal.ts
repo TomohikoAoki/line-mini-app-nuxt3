@@ -11,11 +11,11 @@ export const useModal = () => {
     const isVisible = useState<Modal>("use-modal", () => {
         return { visible: false, number: 0, }
     });
-    const openModal = (number: number) => {
+    const openModal = (number: number): void => {
         isVisible.value.number = number;
         isVisible.value.visible = true;
     };
-    const closeModal = () => {
+    const closeModal = (): void => {
         isVisible.value.visible = false;
     };
 

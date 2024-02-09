@@ -17,7 +17,7 @@ export const useFlashMessage = () => {
         return { visible: false, message: "" }
     });
 
-    const setFlashMessage = (message: string) => {
+    const setFlashMessage = (message: string): void => {
         flashMessage.value.message = message;
         flashMessage.value.visible = true;
 

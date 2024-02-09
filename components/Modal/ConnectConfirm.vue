@@ -94,7 +94,7 @@ const messageNumber = ref<FormValidationMessageNumber>({
  * @todo バリデーションの結果によって、バリデーションの結果とエラーの場合は表示するエラーメッセージナンバーを格納
  * 
  */
-const fieldValidation = (field: string) => {
+const fieldValidation = (field: string): void => {
     // validationの形式
     const rgx: FormValidationRegExp = {
         usrmail: new RegExp("\^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"),
@@ -116,14 +116,13 @@ const fieldValidation = (field: string) => {
 /**
  * @function connect
  * @description 会員情報との紐づけ/submit handler
- * @returns {void}
  * @see　{formData} formの値を使用
  * @see {getUserToken} ユーザーのLineTokenを取得
  * @todo メールアドレスとパスワード、LineTokenを使ってapiを叩いて、ユーザーのポイントとIDを取得
  * @todo 紐づけが完了した場合、userStateにポイントとユーザーIDを格納: ポイントが加算されましたを表示
  * @todo 紐づけができなかった場合、エラーメッセージを表示: ネットワークエラー or 紐づけ情報がない
  */
-const connect = async () => {
+const connect = async (): Promise<void> => {
     startLoading()
     // call api
     const { data, error } = await useFetch<ResponseData>(`https://uranai.heartf.com/Public/epoints/linkmember/?usrmail=${formData.value.usrmail}&password=${formData.value.password}&id_token=${getUserToken()}`)
@@ -246,6 +245,7 @@ const connect = async () => {
 
 .close-area {
     padding-top: 2em;
+    width: 100%;
 
     .close-area__text {
         text-align: center;

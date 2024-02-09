@@ -7,10 +7,10 @@
 
 export const useLoading = () => {
     const isLoading = useState<boolean>("loading", () => false);
-    const startLoading = () => {
+    const startLoading = (): void => {
         isLoading.value = true;
     };
-    const endLoading = () => {
+    const endLoading = (): void => {
         isLoading.value = false;
     };
 

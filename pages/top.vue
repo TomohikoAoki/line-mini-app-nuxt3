@@ -85,12 +85,11 @@ onMounted(() => {
 
 /**
  * @description ポイントを加算する
- * @returns {void}
  * @todo QRコードをスキャンし、加算されたポイントを取得: userStateに格納
  * @todo フラッシュメッセージを表示: ポイントが加算されました
  * @todo エラーが発生した場合、フラッシュメッセージを表示: 通信エラーが発生しました or QRコードの形式が違います
  */
-const addPoint = async () => {
+const addPoint = async (): Promise<void> => {
     startLoading()
     $liff.scanCodeV2()
         .then(async (result) => {
@@ -123,12 +122,11 @@ const addPoint = async () => {
 /**
  * @description LineIDが登録されているかどうか確認: 未登録の場合、会員連携モーダルを表示
  * @see {getUserToken} LineTokenを使用
- * @returns {void}
  * @todo LineTokenを使用してapiを叩く
  * @todo LineIDが登録されている場合、会員情報を取得: ポイントを取得: userStateに格納: フラッシュメッセージを表示: 会員情報との紐づけができました
  * @todo エラーが発生した場合、フラッシュメッセージを表示: ネットワークエラー or 紐づけ情報がない: 会員連携モーダルを表示
  */
-async function connectMemberByLineToken() {
+async function connectMemberByLineToken(): Promise<void> {
     startLoading()
     // call api
     // line tokenを使用
@@ -166,8 +164,6 @@ $baseColor : #efb94b;
     position: relative;
     width: 100%;
 }
-
-
 
 .point-area {
     width: 90%;
@@ -279,8 +275,6 @@ $baseColor : #efb94b;
         }
     }
 }
-
-
 
 .test {
     width: 100%;

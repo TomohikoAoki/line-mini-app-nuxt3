@@ -26,6 +26,7 @@ $baseColor : #c3c1c5;
 
   .footer {
     color: $baseColor;
+    width: 100%;
     padding: 1em 0;
     background-color: rgb(23, 13, 36);
 

@@ -1,4 +1,6 @@
-
+/**
+ * @description: フォームのバリデーションの型
+ */
 export type FormValidation = {
     [key: string]: boolean | null
 }

@@ -23,9 +23,9 @@ export const useUser = () => {
         userState.value.point = point;
     }
 
-    const getUserName = () => userState.value.name
-    const getUserToken = () => userState.value.token
-    const getUserPoint = () => userState.value.point
+    const getUserName = (): string | null => userState.value.name
+    const getUserToken = (): string | null => userState.value.token
+    const getUserPoint = (): number => userState.value.point
 
     return { userState: readonly(userState), getUserName, getUserToken, getUserPoint, setUserName, setUserToken, setUserPoint };
 }
