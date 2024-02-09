@@ -16,14 +16,9 @@
 const router = useRouter()
 const { startLoading, endLoading } = useLoading()
 const { setUserToken, setUserName } = useUser()
-// const { $liffInit, $liff } = useNuxtApp()
+const { $liffInit, $liff } = useNuxtApp()
 
-// startLoading()
-
-console.log(process.env.NUXT_ENV_LIFF_ID, "process.env.NUXT_ENV_LIFF_ID")
-console.log(process.env.LIFF_ID, "process.env.LIFF_ID")
-const config = useRuntimeConfig()
-console.log(config.public.liffId, "config.public.liffId2")
+startLoading()
 
 /**
  * @description ログイン処理
@@ -31,23 +26,23 @@ console.log(config.public.liffId, "config.public.liffId2")
  * @todo 初期化でエラーが返ってきたら、エラーをコンソールに出力, lineのログインボタンを表示する(予定)
  */
 onMounted(() => {
-    // $liffInit
-    //     .then(() => {
-    //         const token = $liff.getIDToken();
-    //         setUserToken(token)
+    $liffInit
+        .then(() => {
+            const token = $liff.getIDToken();
+            setUserToken(token)
 
-    //         const profileData = $liff.getDecodedIDToken()
-    //         setUserName(profileData?.name?.toString() || null)
+            const profileData = $liff.getDecodedIDToken()
+            setUserName(profileData?.name?.toString() || null)
 
-    //         endLoading()
+            endLoading()
 
-    //         router.push('/top')
-    //     })
-    //     .catch((error: any) => {
-    //         console.error(error);
-    //         endLoading()
-    //         // this.showButton = true;
-    //     });
+            router.push('/top')
+        })
+        .catch((error: any) => {
+            console.error(error);
+            endLoading()
+            // this.showButton = true;
+        });
 
 })
 </script>
