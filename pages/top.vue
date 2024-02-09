@@ -133,19 +133,24 @@ async function connectMemberByLineToken(): Promise<void> {
     const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
 
     if (!error.value) {
-        response.value = data
-        setFlashMessage('会員情報との紐づけができました。')
-        setUserPoint(1000)
+        // 情報があったら
+        if (true) {
+            response.value = data
+            setFlashMessage('会員情報との紐づけができました。')
+            setUserPoint(1000)
+            endLoading()
+            return
+        }
+        // 情報がなかったら
+        setFlashMessage('紐づける情報がありませんでした。')
         endLoading()
-
+        openModal(0)
         return
     }
 
     err.value = error.value
-    setFlashMessage('ネットワークエラー or 紐づけ情報がない')
+    setFlashMessage('ネットワークエラー')
     endLoading()
-
-    openModal(0)
 
 }
 

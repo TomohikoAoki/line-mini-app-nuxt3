@@ -27,7 +27,7 @@ startLoading()
  */
 onMounted(() => {
     $liffInit
-        .then(async () => {
+        .then(() => {
             const token = $liff.getIDToken();
             setUserToken(token)
 
