@@ -12,6 +12,8 @@ export default defineNuxtPlugin(nuxtApp => {
     const runtimeConfig = useRuntimeConfig()
     const id = runtimeConfig.public.liffId ? runtimeConfig.public.liffId : process.env.NUXT_PUBLIC_LIFF_ID
 
+    console.log('liffId:', id);
+
     const initResult: Promise<string | void> = liff.init({ liffId: `${id}`, withLoginOnExternalBrowser: true })
         .then(() => {
             console.log('liff.init() done');
