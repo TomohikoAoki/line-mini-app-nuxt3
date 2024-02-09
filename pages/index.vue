@@ -15,7 +15,7 @@
 <script setup lang="ts">
 const router = useRouter()
 const { startLoading, endLoading } = useLoading()
-const { setUserToken, setUserName } = useUser()
+const { setUserToken, setUserName, getUserToken } = useUser()
 const { $liffInit, $liff } = useNuxtApp()
 
 startLoading()
@@ -26,23 +26,28 @@ startLoading()
  * @todo 初期化でエラーが返ってきたら、エラーをコンソールに出力, lineのログインボタンを表示する(予定)
  */
 onMounted(() => {
-    $liffInit
-        .then(() => {
-            const token = $liff.getIDToken();
-            setUserToken(token)
+    if (!getUserToken()) {
+        $liffInit
+            .then(() => {
+                const token = $liff.getIDToken();
+                setUserToken(token)
 
-            const profileData = $liff.getDecodedIDToken()
-            setUserName(profileData?.name?.toString() || null)
+                const profileData = $liff.getDecodedIDToken()
+                setUserName(profileData?.name?.toString() || null)
 
-            endLoading()
+                endLoading()
 
-            router.push('/top')
-        })
-        .catch((error: any) => {
-            console.error(error);
-            endLoading()
-            // this.showButton = true;
-        });
+                router.push('/top')
+            })
+            .catch((error: any) => {
+                console.error(error);
+                endLoading()
+                // this.showButton = true;
+            });
+    } else {
+        endLoading()
+        router.push('/top')
+    }
 
 })
 </script>
