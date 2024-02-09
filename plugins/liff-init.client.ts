@@ -10,7 +10,7 @@ import liff from '@line/liff';
 
 export default defineNuxtPlugin(nuxtApp => {
     const runtimeConfig = useRuntimeConfig()
-    const id = runtimeConfig.public.liffId ? runtimeConfig.public.liffId : process.env.LIFF_ID
+    const id = runtimeConfig.public.liffId === "" ? process.env.LIFF_ID : runtimeConfig.public.liffId
 
     console.log('liffId:', id);
 
