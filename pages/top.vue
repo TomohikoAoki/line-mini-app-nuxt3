@@ -131,7 +131,7 @@ async function connectMemberByLineToken(): Promise<void> {
     // call api
     // line tokenを使用
     // const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
-    const Response = fetch('https://sysf.heartful.work/epoints/verifyLineToken/?id_token=' + getUserToken(),
+    const Response = fetch('https://cake4.example.com/api/verify?id_token=' + getUserToken(),
         {
             method: 'GET',
             headers: {
