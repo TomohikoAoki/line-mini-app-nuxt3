@@ -130,43 +130,27 @@ async function connectMemberByLineToken(): Promise<void> {
     startLoading()
     // call api
     // line tokenを使用
-    // const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
-    const Response = fetch('https://cake4.example.com/api/verify?id_token=' + getUserToken(),
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+    const { data, error } = await useFetch(`https://sysf.heartful.work/epoints/verifyLineToken/?id_token=${getUserToken()}`)
+
+    if (!error.value) {
+        // 情報があったら
+        if (true) {
+            response.value = data
+            setFlashMessage('会員情報との紐づけができました。')
+            setUserPoint(1000)
+            endLoading()
+            return
         }
-    )
+        // 情報がなかったら
+        setFlashMessage('紐づける情報がありませんでした。')
+        endLoading()
+        openModal(0)
+        return
+    }
 
-    Response.then((res) => {
-        return res.json()
-    }).then((data) => {
-        console.log(data)
-    }).catch((error) => {
-        console.log(error)
-    })
-
-    // if (!error.value) {
-    //     // 情報があったら
-    //     if (true) {
-    //         response.value = data
-    //         setFlashMessage('会員情報との紐づけができました。')
-    //         setUserPoint(1000)
-    //         endLoading()
-    //         return
-    //     }
-    //     // 情報がなかったら
-    //     setFlashMessage('紐づける情報がありませんでした。')
-    //     endLoading()
-    //     openModal(0)
-    //     return
-    // }
-
-    // err.value = error.value
-    // setFlashMessage('ネットワークエラー')
-    // endLoading()
+    err.value = error.value
+    setFlashMessage('ネットワークエラー')
+    endLoading()
 
 }
 
