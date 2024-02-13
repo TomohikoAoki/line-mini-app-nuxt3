@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <Loading></Loading>
     <NuxtPage />
     <footer class="footer">
       <p class="copy-right">Copyright © 2023 占いハートフル All Rights Reserved.</p>
@@ -8,14 +7,12 @@
       <p class="footer-address">〒112-0001 東京都文京区白山2-30-2 平林ビル1F</p>
       <p class="footer-tel">03-3868-0349</p>
     </footer>
+    <LazyLoading></LazyLoading>
     <LazyModalBase></LazyModalBase>
     <LazyModalFlashMessage></LazyModalFlashMessage>
   </div>
 </template>
 
-<script setup>
-
-</script>
 
 <style lang="scss" scoped>
 $baseColor : #c3c1c5;

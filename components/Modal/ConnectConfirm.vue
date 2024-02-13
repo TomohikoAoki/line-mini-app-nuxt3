@@ -160,7 +160,6 @@ const connect = async (): Promise<void> => {
     padding: 0 0 1em 0;
 }
 
-
 .first-text {
     line-height: 1.5em;
     width: 95%;
@@ -172,8 +171,6 @@ const connect = async (): Promise<void> => {
     font-size: 0.8em;
     padding: 0.3em 0;
 }
-
-
 
 .form {
     width: 90%;
@@ -212,8 +209,6 @@ const connect = async (): Promise<void> => {
     .btn {
         margin: 0 auto;
     }
-
-
 }
 
 .error {

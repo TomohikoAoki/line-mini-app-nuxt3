@@ -256,8 +256,6 @@ const usePoint = async (): Promise<void> => {
         justify-content: space-around;
         width: 100%;
     }
-
-
 }
 
 .error {

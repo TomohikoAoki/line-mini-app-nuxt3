@@ -38,17 +38,22 @@ const modalConmopents = [
     UsePoint
 ]
 
-// modal componentの切り替え
-// openModal()でindexを受け取り、modalTyle()でmodalを切り替える
-// 0: ConnectConfirm
-// 1: UsePoint
-const modalType = (index: number) => {
+/**
+ * @description モーダルの内容を切り替える
+ * @see modalConmopents
+ * @returns {Component} modalConmopents[index]
+ */
+const modalType = (index: number): Component => {
     return modalConmopents[index]
 }
 
-// isVisibleでv-ifのコントロール
-// mountしたらbody scroll lockを付与
-// unmountしたらbody scroll lockを解除
+/**
+ * @description isVisibleの値を監視して、モーダルが表示されたらbody scroll lockを付与する
+ * @see isVisible　モーダルの表示状態と内容
+ * @see disableBodyScroll　body scroll lockを付与する
+ * @see clearAllBodyScrollLocks　body scroll lockを解除する
+ * @see nextTick　DOMの更新後に実行する
+ */
 watch(isVisible.value, (newVal) => {
     nextTick(() => {
         if (newVal.visible) {
@@ -58,7 +63,6 @@ watch(isVisible.value, (newVal) => {
             clearAllBodyScrollLocks();
         }
     })
-
 })
 
 
